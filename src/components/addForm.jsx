@@ -3,13 +3,14 @@ import Form from "./common/form";
 
 class AddForm extends Form {
   state = {
-    data: { amount: 0, lender: "" },
+    data: { balance: 0, lender: "" },
     errors: {},
   };
 
   doSubmit = () => {
     const data = { ...this.state.data };
-    data.amount = parseFloat(data.amount);
+    data.balance = parseInt(data.balance);
+    console.log(data);
     this.props.onAdd(data);
   };
 
@@ -17,7 +18,7 @@ class AddForm extends Form {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
-          {this.renderInput("amount", "Amount")}
+          {this.renderInput("balance", "Balance")}
           {this.renderInput("lender", "Lender")}
           {this.renderSubmitButton("Add")}
         </div>

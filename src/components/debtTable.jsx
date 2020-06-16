@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Table from "./common/table";
-import AddForm from "./addForm";
 import PayForm from "./payForm";
 
 class DebtTable extends Component {
@@ -17,19 +16,12 @@ class DebtTable extends Component {
   ];
 
   render() {
-    const { data, onAdd } = this.props;
     return (
       <React.Fragment>
-        <Table columns={this.columns} data={data} />
-        <AddForm onAdd={(data) => onAdd(data)} />
+        <Table columns={this.columns} data={this.props.data} />
       </React.Fragment>
     );
   }
 }
 
 export default DebtTable;
-
-// DebtTable
-//// Table
-////// TableHeader
-////// TableBody

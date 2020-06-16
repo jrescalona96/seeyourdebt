@@ -9,6 +9,7 @@ function Input({ name, label, onChange, value }) {
         name={name}
         value={value}
         onChange={onChange}
+        onFocus={(e) => (e.currentTarget.value = "")}
       />
     </div>
   );
