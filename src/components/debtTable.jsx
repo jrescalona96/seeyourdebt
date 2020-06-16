@@ -10,7 +10,7 @@ class DebtTable extends Component {
       path: "payAmountForm",
       label: "Pay Amount",
       content: (item) => (
-        <PayForm item={item} onPay={(amount) => this.props.onPay(amount)} />
+        <PayForm item={item} onPay={(data) => this.props.onPay(data)} />
       ),
     },
   ];
@@ -18,6 +18,7 @@ class DebtTable extends Component {
   render() {
     return (
       <React.Fragment>
+        <h1>All Debts</h1>
         <Table columns={this.columns} data={this.props.data} />
       </React.Fragment>
     );

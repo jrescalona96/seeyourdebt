@@ -1,5 +1,6 @@
 import React from "react";
 import Form from "./common/form";
+import Joi from "@hapi/joi";
 
 class AddForm extends Form {
   state = {
@@ -7,22 +8,27 @@ class AddForm extends Form {
     errors: {},
   };
 
+  schema = {
+    balance: Joi.number().greater(0).required().label(`Balance`),
+    lender: Joi.string().required().label("Lender"),
+  };
+
   doSubmit = () => {
-    const data = { ...this.state.data };
-    data.balance = parseInt(data.balance);
-    console.log(data);
-    this.props.onAdd(data);
+    this.props.onAdd(this.state.data);
   };
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          {this.renderInput("balance", "Balance")}
-          {this.renderInput("lender", "Lender")}
-          {this.renderSubmitButton("Add")}
-        </div>
-      </form>
+      <React.Fragment>
+        <h1>Add New Debt</h1>
+        <form onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            {this.renderInput("balance", "Balance")}
+            {this.renderInput("lender", "Lender")}
+            {this.renderSubmitButton("Add")}
+          </div>
+        </form>
+      </React.Fragment>
     );
   }
 }
