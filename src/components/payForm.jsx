@@ -29,9 +29,9 @@ class PayForm extends Form {
   render() {
     return (
       <React.Fragment>
-        <form className="row" onSubmit={this.handleSubmit}>
-          <div className="col-6"> {this.renderInput("amount")}</div>
-          <div className="col-2"> {this.renderSubmitButton("Pay")}</div>
+        <form className="row " onSubmit={this.handleSubmit}>
+          <div>{this.renderInput("amount")}</div>
+          <div>{this.renderSubmitButton("Pay")}</div>
         </form>
       </React.Fragment>
     );

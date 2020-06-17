@@ -45,15 +45,17 @@ class Dashboard extends Component {
     const balance = this.getSum(debts);
 
     return (
-      <div className="row">
-        <div className="col-4">
-          <AddForm onAdd={(data) => this.handleAdd(data)} />
+      <React.Fragment>
+        <div className="row sticky-top container">
+          <div className="col-12 col-sm-6 m-2 p-2 card">
+            <DebtTable data={debts} onPay={(data) => this.handlePay(data)} />
+          </div>
+          <div className="col-12 col-sm-4 m-2 p-2 h-50 card">
+            <AddForm onAdd={(data) => this.handleAdd(data)} />
+          </div>
         </div>
-        <div className="col-8">
-          <TotalDebt balance={balance} />
-        </div>
-        <DebtTable data={debts} onPay={(data) => this.handlePay(data)} />
-      </div>
+        <TotalDebt balance={balance} />
+      </React.Fragment>
     );
   }
 }

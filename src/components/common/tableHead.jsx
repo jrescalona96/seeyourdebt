@@ -5,7 +5,9 @@ function TableHead({ columns }) {
     <thead>
       <tr>
         {columns.map((col) => (
-          <th key={col.path || col.key}>{col.label}</th>
+          <th className="p-0" key={col.path || col.key}>
+            {col.label}
+          </th>
         ))}
       </tr>
     </thead>

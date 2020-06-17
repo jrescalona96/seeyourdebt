@@ -20,7 +20,7 @@ class AddForm extends Form {
   render() {
     return (
       <React.Fragment>
-        <h1>Add New Debt</h1>
+        <h3>Add New Debt</h3>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             {this.renderInput("balance", "Balance")}

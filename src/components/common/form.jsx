@@ -40,7 +40,7 @@ class Form extends Component {
 
   renderSubmitButton(label) {
     return (
-      <button className="btn btn-outline-primary btn-sm mt-2">{label}</button>
+      <button className="btn btn-outline-primary btn-sm m-2">{label}</button>
     );
   }
 

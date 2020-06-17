@@ -15,7 +15,9 @@ function TableBody({ columns, data }) {
       {data.map((item) => (
         <tr key={item._id}>
           {columns.map((col) => (
-            <td key={createKey(item, col)}>{renderCell(item, col)}</td>
+            <td className="align-middle p-0" key={createKey(item, col)}>
+              {renderCell(item, col)}
+            </td>
           ))}
         </tr>
       ))}

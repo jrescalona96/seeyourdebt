@@ -18,7 +18,7 @@ class DebtTable extends Component {
   render() {
     return (
       <React.Fragment>
-        <h1>All Debts</h1>
+        <h3>All Debts</h3>
         <Table columns={this.columns} data={this.props.data} />
       </React.Fragment>
     );
