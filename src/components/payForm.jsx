@@ -4,40 +4,39 @@ import Form from "./common/form";
 
 class PayForm extends Form {
   state = {
-    data: { _id: "", amount: 0 },
+    data: { amount: "" },
     errors: {},
   };
 
-  schema = {
-    _id: Joi.string().required(),
-    balance: Joi.number().greater(0).required(),
-    amount: Joi.number().greater(0).required().label("Amount"),
-    isPaid: Joi.boolean().required(),
+  // must be declared before the schema
+  validateWithBalance = (value, helpers) => {
+    const { item } = this.props;
+    const val = parseFloat(value);
+    if (val > item.balance) return helpers.error();
   };
 
-  componentDidMount() {
-    const data = this.mapToState();
-    this.setState({ data });
-  }
-
-  mapToState() {
-    const { _id, isPaid } = this.props.item;
-    const data = { ...this.state.data };
-    data._id = _id;
-    data.isPaid = isPaid;
-    return data;
-  }
+  schema = {
+    amount: Joi.number()
+      .greater(0)
+      .required()
+      .label("Amount")
+      .custom(this.validateWithBalance, "amount must be <= balance")
+      .message("Amount too much"),
+  };
 
   doSubmit() {
-    this.props.onPay(this.state.data);
+    const { onPay, item } = this.props;
+    const data = { _id: item._id, amount: this.state.data.amount };
+    onPay(data);
   }
 
   render() {
+    const { item } = this.props;
     return (
       <React.Fragment>
         <form className="row " onSubmit={this.handleSubmit}>
           <div>{this.renderInput("amount")}</div>
-          <div>{this.renderSubmitButton("Pay", this.props.item.isPaid)}</div>
+          <div>{this.renderSubmitButton("Pay", item.isPaid)}</div>
         </form>
       </React.Fragment>
     );

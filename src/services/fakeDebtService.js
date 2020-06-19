@@ -1,3 +1,5 @@
+import * as date from "./dateService";
+
 let debts = [
   {
     _id: "0",
@@ -58,17 +60,28 @@ export function getTotalBalance() {
 }
 
 export function payDebt({ _id, amount }) {
+  const amt = parseFloat(amount);
   debts = debts.map((item) => {
-    if (item._id === _id) {
-      item.balance -= amount;
-      if (item.balance <= 0) {
-        item.balance = 0;
-        item.isPaid = true;
-      }
-    }
+    if (item._id === _id) item.balance -= amt;
+    if (item.balance <= 0) item.isPaid = true;
     return item;
   });
+  return debts;
+}
 
+export function addDebt({ balance, lender }) {
+  const _id = (debts.length + 1).toString();
+  const amount = parseFloat(balance);
+  const data = {
+    _id: _id,
+    date: date.getDateToday(),
+    total: amount,
+    balance: amount,
+    lender: lender,
+    isPaid: false,
+  };
+
+  debts.push(data);
   return debts;
 }
 

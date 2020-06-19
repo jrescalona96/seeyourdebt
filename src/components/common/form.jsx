@@ -7,6 +7,7 @@ class Form extends Component {
     const localSchema = Joi.object().keys(this.schema);
     const options = { abortEarly: false };
     const { error } = localSchema.validate(this.state.data, options);
+
     if (error)
       return error.details.reduce((errors, err) => {
         errors[err.path[0]] = err.message;
@@ -19,6 +20,7 @@ class Form extends Component {
     const field = { [name]: value };
     const localSchema = Joi.object().keys({ [name]: this.schema[name] });
     const { error } = localSchema.validate(field);
+
     return error ? error.details[0].message : null;
   };
 

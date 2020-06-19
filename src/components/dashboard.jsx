@@ -14,10 +14,9 @@ class Dashboard extends Component {
     this.setState({ debts });
   }
 
-  handleAdd = ({ balance, lender }) => {
-    const debts = [...this.state.debts];
-    const _id = debts.length + 1;
-    debts.push({ _id, balance: balance, lender: lender, isPaid: false });
+  handleAdd = (data) => {
+    const debts = debt.addDebt(data);
+    console.log(debts);
     this.setState({ debts });
   };
 
