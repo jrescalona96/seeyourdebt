@@ -7,7 +7,6 @@ class Form extends Component {
     const localSchema = Joi.object().keys(this.schema);
     const options = { abortEarly: false };
     const { error } = localSchema.validate(this.state.data, options);
-
     if (error)
       return error.details.reduce((errors, err) => {
         errors[err.path[0]] = err.message;
@@ -38,9 +37,14 @@ class Form extends Component {
     if (!errors) this.doSubmit();
   };
 
-  renderSubmitButton(label) {
+  renderSubmitButton(label, isDisabled) {
     return (
-      <button className="btn btn-outline-primary btn-sm m-2">{label}</button>
+      <button
+        className="btn btn-outline-primary btn-sm m-2"
+        disabled={isDisabled}
+      >
+        {label}
+      </button>
     );
   }
 

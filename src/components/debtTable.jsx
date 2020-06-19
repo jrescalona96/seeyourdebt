@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Table from "./common/table";
 import PayForm from "./payForm";
+import * as debt from "../services/fakeDebtService";
 
 class DebtTable extends Component {
   columns = [
@@ -18,7 +19,7 @@ class DebtTable extends Component {
   render() {
     return (
       <React.Fragment>
-        <h3>All Debts</h3>
+        <h3>Total: ${debt.getTotalBalance()}</h3>
         <Table columns={this.columns} data={this.props.data} />
       </React.Fragment>
     );

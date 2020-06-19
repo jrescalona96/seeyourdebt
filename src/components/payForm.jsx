@@ -10,16 +10,23 @@ class PayForm extends Form {
 
   schema = {
     _id: Joi.string().required(),
-    balance: Joi.number().required(),
+    balance: Joi.number().greater(0).required(),
     amount: Joi.number().greater(0).required().label("Amount"),
+    isPaid: Joi.boolean().required(),
   };
 
   componentDidMount() {
-    const { _id, balance } = this.props.item;
+    const data = this.mapToState();
+    this.setState({ data });
+  }
+
+  mapToState() {
+    const { _id, balance, isPaid } = this.props.item;
     const data = { ...this.state.data };
     data._id = _id;
     data.balance = balance;
-    this.setState({ data });
+    data.isPaid = isPaid;
+    return data;
   }
 
   doSubmit() {
@@ -31,7 +38,7 @@ class PayForm extends Form {
       <React.Fragment>
         <form className="row " onSubmit={this.handleSubmit}>
           <div>{this.renderInput("amount")}</div>
-          <div>{this.renderSubmitButton("Pay")}</div>
+          <div>{this.renderSubmitButton("Pay", this.props.item.isPaid)}</div>
         </form>
       </React.Fragment>
     );
