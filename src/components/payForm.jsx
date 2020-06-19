@@ -4,7 +4,7 @@ import Form from "./common/form";
 
 class PayForm extends Form {
   state = {
-    data: { _id: "", balance: 0, amount: 0 },
+    data: { _id: "", amount: 0 },
     errors: {},
   };
 
@@ -21,10 +21,9 @@ class PayForm extends Form {
   }
 
   mapToState() {
-    const { _id, balance, isPaid } = this.props.item;
+    const { _id, isPaid } = this.props.item;
     const data = { ...this.state.data };
     data._id = _id;
-    data.balance = balance;
     data.isPaid = isPaid;
     return data;
   }

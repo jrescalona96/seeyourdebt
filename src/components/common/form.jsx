@@ -15,26 +15,30 @@ class Form extends Component {
     else return null;
   };
 
-  parseInput = (input) => {
-    const type = typeof this.state.data[input.name];
-    if (type === "number") {
-      if (!input.value) return 0;
-      return parseFloat(input.value);
-    } else return input.value;
+  validateProperty = ({ name, value }) => {
+    const field = { [name]: value };
+    const localSchema = Joi.object().keys({ [name]: this.schema[name] });
+    const { error } = localSchema.validate(field);
+    return error ? error.details[0].message : null;
   };
 
   handleChange = ({ currentTarget: input }) => {
+    const errors = { ...this.state.errors };
+    const propertyErrorMessage = this.validateProperty(input);
+    if (propertyErrorMessage) errors[input.name] = propertyErrorMessage;
+    else delete errors[input.name];
+
     const data = { ...this.state.data };
-    const parsedInput = this.parseInput(input);
-    data[input.name] = parsedInput;
-    this.setState({ data });
+    data[input.name] = input.value;
+    this.setState({ data, errors });
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
     const errors = this.validate();
     this.setState({ errors: errors || {} });
-    if (!errors) this.doSubmit();
+    if (errors) return;
+    else this.doSubmit();
   };
 
   renderSubmitButton(label, isDisabled) {
