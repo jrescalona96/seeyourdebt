@@ -51,14 +51,6 @@ export function getDebt(_id) {
   return debts.find((item) => item._id === _id);
 }
 
-export function getTotal() {
-  return debts.reduce((total, item) => total + item.total, 0);
-}
-
-export function getTotalBalance() {
-  return debts.reduce((total, item) => total + item.balance, 0);
-}
-
 export function payDebt({ _id, amount }) {
   const amt = parseFloat(amount);
   debts = debts.map((item) => {
@@ -85,4 +77,4 @@ export function addDebt({ balance, lender }) {
   return debts;
 }
 
-export default { getDebts, getDebt, getTotal, payDebt, getTotalBalance };
+export default { getDebts, getDebt, payDebt };

@@ -1,27 +1,21 @@
 import React from "react";
+import { getIntlFormatter } from "../utils/formatter";
 
 function TotalDebt({ total, balance }) {
-  // const windowHeight = window.innerHeight;
-  let textHeight = "5vw";
+  const formatter = getIntlFormatter();
 
-  const style1 = {
+  let textHeight = 30 / (total / balance);
+
+  const style = {
     color: "orange",
-    fontSize: textHeight,
-    fontWeight: "bold",
-  };
-  const style2 = {
-    color: "red",
-    fontSize: textHeight,
+    fontSize: `${textHeight}vw`,
     fontWeight: "bold",
   };
 
   return (
     <React.Fragment>
-      <div className="text-left overflow-hidden" style={style2}>
-        Total: ${total}
-      </div>
-      <div className="text-left overflow-hidden" style={style1}>
-        Balance: ${balance}
+      <div className="text-left overflow-hidden" style={style}>
+        {formatter.format(balance)}
       </div>
     </React.Fragment>
   );

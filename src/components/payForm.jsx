@@ -9,10 +9,15 @@ class PayForm extends Form {
   };
 
   // must be declared before the schema
-  validateWithBalance = (value, helpers) => {
-    const { item } = this.props;
-    const val = parseFloat(value);
-    if (val > item.balance) return helpers.error();
+  lessThanEqualToBalance = (value, helpers) => {
+    try {
+      const { item } = this.props;
+      const balance = parseFloat(item.balance.replace(/[$,]/, ""));
+      const val = parseFloat(value);
+      if (val > balance) return helpers.error();
+    } catch (error) {
+      throw new Error("Unable to parse balance.");
+    }
   };
 
   schema = {
@@ -20,7 +25,7 @@ class PayForm extends Form {
       .greater(0)
       .required()
       .label("Amount")
-      .custom(this.validateWithBalance, "amount must be <= balance")
+      .custom(this.lessThanEqualToBalance, "amount must be <= balance")
       .message("Amount too much"),
   };
 
@@ -34,7 +39,7 @@ class PayForm extends Form {
     const { item } = this.props;
     return (
       <React.Fragment>
-        <form className="row " onSubmit={this.handleSubmit}>
+        <form className="row" onSubmit={this.handleSubmit}>
           <div>{this.renderInput("amount")}</div>
           <div>{this.renderSubmitButton("Pay", item.isPaid)}</div>
         </form>
