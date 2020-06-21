@@ -25,8 +25,9 @@ class AddForm extends Form {
           <div className="form-group">
             {this.renderInput("balance", "Balance")}
             {this.renderInput("lender", "Lender")}
-            {this.renderSubmitButton("Add")}
           </div>
+
+          {this.renderSubmitButton("Add")}
         </form>
       </React.Fragment>
     );

@@ -4,7 +4,7 @@ function Input({ name, label, onChange, onFocus, value, error }) {
   let classes = "form-control";
   classes += error ? " is-invalid" : "";
   return (
-    <div className="m-2">
+    <div>
       {label && <label htmlFor={name}>{label}</label>}
       <input
         className={classes}

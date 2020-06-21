@@ -11,3 +11,8 @@ body {
 .clickable {
   cursor: pointer;
 }
+
+.table tr {
+  border-top: hidden;
+  border-bottom: hidden;
+}

@@ -46,7 +46,7 @@ class Form extends Component {
   renderSubmitButton(label, isDisabled) {
     return (
       <button
-        className="btn btn-outline-primary btn-sm m-2"
+        className="btn btn-primary btn-sm btn-block"
         disabled={isDisabled}
       >
         {label}

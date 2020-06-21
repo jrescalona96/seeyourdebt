@@ -40,7 +40,9 @@ class PayForm extends Form {
       <React.Fragment>
         <form className="row" onSubmit={this.handleSubmit}>
           <div>{this.renderInput("amount")}</div>
-          <div>{this.renderSubmitButton("Pay", item.isPaid)}</div>
+          <div className="ml-2">
+            {this.renderSubmitButton("Pay", item.isPaid)}
+          </div>
         </form>
       </React.Fragment>
     );

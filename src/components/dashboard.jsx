@@ -15,7 +15,6 @@ class Dashboard extends Component {
   componentDidMount() {
     const debts = debt.getDebts();
     const sortColumn = { path: "balance", order: "asc" };
-
     this.setState({ debts, sortColumn });
   }
 

@@ -4,9 +4,11 @@ class TableHead extends Component {
   raiseSort = (path) => {
     const sortColumn = { ...this.props.sortColumn };
 
-    if (path === sortColumn.path)
+    if (!path) {
+      return;
+    } else if (path === sortColumn.path) {
       sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    else {
+    } else {
       sortColumn.path = path;
       sortColumn.order = "asc";
     }
@@ -15,13 +17,14 @@ class TableHead extends Component {
 
   renderSortIcon = (col) => {
     const { sortColumn } = this.props;
-    if (col.path !== sortColumn.path) return null;
-    if (sortColumn.order === "asc")
+    if (col.path !== sortColumn.path || col.key) return null;
+    else if (sortColumn.order === "asc")
       return <i class="ml-1 fa fa-arrow-up" aria-hidden="true"></i>;
     return <i class="ml-1 fa fa-arrow-down" aria-hidden="true"></i>;
   };
 
   render() {
+    const classes = "p-1 ";
     return (
       <thead>
         <tr>
@@ -30,7 +33,7 @@ class TableHead extends Component {
               onClick={() => {
                 this.raiseSort(col.path);
               }}
-              className="p-1 clickable"
+              className={col.path ? "p-1 clickable" : "p-1"}
               key={col.path || col.key}
             >
               {col.label}
