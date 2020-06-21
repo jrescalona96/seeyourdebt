@@ -11,10 +11,9 @@ class PayForm extends Form {
   // must be declared before the schema
   lessThanEqualToBalance = (value, helpers) => {
     try {
-      const { item } = this.props;
-      const balance = parseFloat(item.balance.replace(/[$,]/, ""));
+      const bal = parseFloat(this.props.item.balance.replace(/[$,]/g, ""));
       const val = parseFloat(value);
-      if (val > balance) return helpers.error();
+      if (val > bal) return helpers.error();
     } catch (error) {
       throw new Error("Unable to parse balance.");
     }

@@ -4,7 +4,7 @@ import Joi from "@hapi/joi";
 
 class AddForm extends Form {
   state = {
-    data: { balance: 0, lender: "" },
+    data: { balance: "", lender: "" },
     errors: {},
   };
 

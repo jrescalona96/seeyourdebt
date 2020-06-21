@@ -4,11 +4,7 @@ import "./App.css";
 
 class App extends Component {
   render() {
-    return (
-      <div className="container">
-        <Dashboard />
-      </div>
-    );
+    return <Dashboard />;
   }
 }
 
