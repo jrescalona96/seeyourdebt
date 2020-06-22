@@ -26,7 +26,6 @@ class AddForm extends Form {
             {this.renderInput("balance", "Balance")}
             {this.renderInput("lender", "Lender")}
           </div>
-
           {this.renderSubmitButton("Add")}
         </form>
       </React.Fragment>

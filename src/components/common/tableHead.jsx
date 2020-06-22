@@ -24,7 +24,6 @@ class TableHead extends Component {
   };
 
   render() {
-    const classes = "p-1 ";
     return (
       <thead>
         <tr>

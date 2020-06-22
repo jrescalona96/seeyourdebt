@@ -72,7 +72,9 @@ class Dashboard extends Component {
             <AddForm onAdd={(data) => this.handleAdd(data)} />
           </div>
         </div>
-        <TotalDebt total={total} balance={balance} />
+        <div>
+          <TotalDebt total={total} balance={balance} />
+        </div>
       </React.Fragment>
     );
   }
