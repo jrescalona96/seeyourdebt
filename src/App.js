@@ -1,11 +1,9 @@
-import React, { Component } from "react";
-import Dashboard from "./components/dashboard";
+import React from "react";
+import Debts from "./components/debts";
 import "./App.css";
 
-class App extends Component {
-  render() {
-    return <Dashboard />;
-  }
+function App() {
+  return <Debts />;
 }
 
 export default App;

@@ -1,11 +1,11 @@
-export function getIntlFormatter() {
-  const formatter = new Intl.NumberFormat("en-US", {
+export function getCurrencyFormatter(locale) {
+  console.log(locale.currency);
+
+  return new Intl.NumberFormat(locale.language, {
     style: "currency",
-    currency: "USD",
+    currency: locale.currency,
     minimumFractionDigits: 2,
   });
-
-  return formatter;
 }
 
-export default { getIntlFormatter };
+export default { getCurrencyFormatter };

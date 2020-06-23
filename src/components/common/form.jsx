@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Input from "./input";
+import Menu from "./menu";
 import Joi from "@hapi/joi";
 
 class Form extends Component {
@@ -26,12 +27,13 @@ class Form extends Component {
 
   handleChange = ({ currentTarget: input }) => {
     const errors = { ...this.state.errors };
+
     const propertyErrorMessage = this.validateProperty(input);
     if (propertyErrorMessage) errors[input.name] = propertyErrorMessage;
-    else delete errors[input.name];
 
     const data = { ...this.state.data };
     data[input.name] = input.value;
+
     this.setState({ data, errors });
   };
 
@@ -62,6 +64,17 @@ class Form extends Component {
         onChange={this.handleChange}
         value={this.state.data[name]}
         error={this.state.errors[name]}
+      />
+    );
+  }
+
+  renderMenu({ name, label, items }) {
+    return (
+      <Menu
+        items={items}
+        name={name}
+        label={label}
+        onChange={this.handleChange}
       />
     );
   }

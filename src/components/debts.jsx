@@ -2,20 +2,26 @@ import React, { Component } from "react";
 import TotalDebt from "./totalDebt";
 import DebtTable from "./debtTable";
 import AddForm from "./addForm";
+import CurrencyForm from "./currencyForm";
+import * as locale from "../services/localeService";
 import * as debt from "../services/fakeDebtService";
-import { getIntlFormatter } from "../utils/formatter";
+import { getCurrencyFormatter } from "../utils/formatter";
 import _ from "lodash";
 
-class Dashboard extends Component {
+class Debts extends Component {
   state = {
     debts: [],
     sortColumn: {},
+    currentLocale: {},
+    locales: [],
   };
 
   componentDidMount() {
-    const debts = debt.getDebts();
+    const debts = debt.getDebts(); // pull from local storage
     const sortColumn = { path: "balance", order: "asc" };
-    this.setState({ debts, sortColumn });
+    const currentLocale = locale.getDefaultLocale(); // pull from local storage
+    const locales = locale.getLocales(); // pull from local storage
+    this.setState({ debts, sortColumn, locales, currentLocale });
   }
 
   handleAdd = (data) => {
@@ -32,8 +38,25 @@ class Dashboard extends Component {
     this.setState({ debts });
   };
 
+  handleLocaleChange = (localeCode) => {
+    const currentLocale = locale.getLocale(localeCode);
+    this.setState({ currentLocale });
+  };
+
+  // start here
   mapToModelView = (data) => {
-    const formatter = getIntlFormatter();
+    let currentLocale = { ...this.state.currentLocale };
+
+    if (!currentLocale.currency)
+      currentLocale = {
+        _id: "en-US",
+        language: "en-US",
+        name: "United States",
+        currency: "USD",
+      };
+
+    const formatter = getCurrencyFormatter(currentLocale);
+
     return data.map((item) => ({
       _id: item._id,
       date: item.date,
@@ -46,9 +69,8 @@ class Dashboard extends Component {
 
   getPageDate = () => {
     const { debts: data, sortColumn } = this.state;
-
-    const ordered = _.orderBy(data, [sortColumn.path], [sortColumn.order]);
-    const debts = this.mapToModelView(ordered);
+    const orderedDebts = _.orderBy(data, [sortColumn.path], [sortColumn.order]);
+    const debts = this.mapToModelView(orderedDebts);
     const balance = data.reduce((total, item) => total + item.balance, 0);
     const total = data.reduce((total, item) => total + item.total, 0);
 
@@ -57,10 +79,12 @@ class Dashboard extends Component {
 
   render() {
     const { debts, total, balance } = this.getPageDate();
+    const { locales, currentLocale } = this.state;
+
     return (
       <React.Fragment>
-        <div className="row sticky-top container-fluid">
-          <div className={"col-12 col-md-8 m-2 p-2"}>
+        <div className="row sticky-top">
+          <div className={"col-12 col-md-5 m-2 p-2"}>
             <DebtTable
               data={{ balance, total, debts }}
               onPay={(data) => this.handlePay(data)}
@@ -68,16 +92,25 @@ class Dashboard extends Component {
               sortColumn={this.state.sortColumn}
             />
           </div>
-          <div className="col-12 col-md-3 m-2 p-2">
+          <div className="col-12 col-md-2 m-2 p-2">
             <AddForm onAdd={(data) => this.handleAdd(data)} />
           </div>
+          <div className="col-12 col-md-2 m-2 p-2">
+            <CurrencyForm
+              locales={locales}
+              currentLocale={currentLocale}
+              onLocaleChange={this.handleLocaleChange}
+            />
+          </div>
         </div>
-        <div>
-          <TotalDebt total={total} balance={balance} />
-        </div>
+        <TotalDebt
+          total={total}
+          balance={balance}
+          currentLocale={currentLocale}
+        />
       </React.Fragment>
     );
   }
 }
 
-export default Dashboard;
+export default Debts;

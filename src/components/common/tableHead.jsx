@@ -19,8 +19,8 @@ class TableHead extends Component {
     const { sortColumn } = this.props;
     if (col.path !== sortColumn.path || col.key) return null;
     else if (sortColumn.order === "asc")
-      return <i class="ml-1 fa fa-arrow-up" aria-hidden="true"></i>;
-    return <i class="ml-1 fa fa-arrow-down" aria-hidden="true"></i>;
+      return <i className="ml-1 fa fa-arrow-up" aria-hidden="true"></i>;
+    return <i className="ml-1 fa fa-arrow-down" aria-hidden="true"></i>;
   };
 
   render() {

@@ -1,8 +1,8 @@
 import React from "react";
-import { getIntlFormatter } from "../utils/formatter";
+import { getCurrencyFormatter } from "../utils/formatter";
+import * as locale from "../services/localeService";
 
-function TotalDebt({ total, balance }) {
-  const formatter = getIntlFormatter();
+function TotalDebt({ total, balance, currentLocale }) {
   const scaleFactor = 40;
   const textHeight = balance > 0 ? scaleFactor / (total / balance) : 8;
 
@@ -18,6 +18,14 @@ function TotalDebt({ total, balance }) {
     color: getColor(),
     fontWeight: "bold",
   };
+
+  let formatter = {};
+  if (!currentLocale._id) {
+    const defaultLocale = locale.getDefaultLocale();
+    formatter = getCurrencyFormatter(defaultLocale);
+  } else {
+    formatter = getCurrencyFormatter(currentLocale);
+  }
 
   return (
     <React.Fragment>
