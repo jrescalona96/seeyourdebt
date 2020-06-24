@@ -5,6 +5,7 @@ import AddForm from "./addForm";
 import CurrencyForm from "./currencyForm";
 import * as locale from "../services/localeService";
 import * as debt from "../services/fakeDebtService";
+import * as currency from "../services/currencyService";
 import { getCurrencyFormatter } from "../utils/formatter";
 import _ from "lodash";
 
@@ -38,9 +39,18 @@ class Debts extends Component {
     this.setState({ debts });
   };
 
-  handleLocaleChange = (localeCode) => {
-    const currentLocale = locale.getLocale(localeCode);
-    this.setState({ currentLocale });
+  handleLocaleChange = async (languageCode) => {
+    if (languageCode !== this.state.currentLocale.languageCode) {
+      const newLocale = locale.getLocale(languageCode);
+      const forex = await currency.getForexRate(newLocale.currency);
+      const debts = this.state.debts.map((item) => {
+        item.balance = item.balance * forex;
+        item.total = item.total * forex;
+        return item;
+      });
+
+      this.setState({ currentLocale: newLocale, debts });
+    }
   };
 
   mapToModelView = (data, formatter) => {
@@ -81,7 +91,7 @@ class Debts extends Component {
     return (
       <React.Fragment>
         <div className="row sticky-top">
-          <div className={"col-12 col-md-5 m-2 p-2"}>
+          <div className={"col-12 col-md-6 m-2 p-2"}>
             <DebtTable
               data={{ balance, total, debts }}
               onPay={(data) => this.handlePay(data)}
@@ -89,7 +99,7 @@ class Debts extends Component {
               sortColumn={this.state.sortColumn}
             />
           </div>
-          <div className="col-12 col-md-2 m-2 p-2">
+          <div className="col-12 col-md-3 m-2 p-2">
             <AddForm onAdd={(data) => this.handleAdd(data)} />
           </div>
           <div className="col-12 col-md-2 m-2 p-2">

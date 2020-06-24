@@ -82,4 +82,8 @@ export function addDebt({ balance, lender }) {
   return debts;
 }
 
-export default { getDebts, getDebt, payDebt };
+export function updateData(data) {
+  debts = data;
+}
+
+export default { getDebts, getDebt, payDebt, updateData };
