@@ -1,9 +1,12 @@
-export function getCurrencyFormatter(locale) {
-  console.log(locale.currency);
+import * as locale from "../services/localeService";
 
-  return new Intl.NumberFormat(locale.language, {
+export function getCurrencyFormatter(currentLocale) {
+  let loc = { ...currentLocale };
+  if (!loc._id) loc = locale.getDefaultLocale();
+
+  return new Intl.NumberFormat(loc.language, {
     style: "currency",
-    currency: locale.currency,
+    currency: loc.currency,
     minimumFractionDigits: 2,
   });
 }

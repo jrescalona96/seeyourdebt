@@ -1,6 +1,5 @@
 import React from "react";
 import { getCurrencyFormatter } from "../utils/formatter";
-import * as locale from "../services/localeService";
 
 function TotalDebt({ total, balance, currentLocale }) {
   const scaleFactor = 40;
@@ -13,20 +12,12 @@ function TotalDebt({ total, balance, currentLocale }) {
     else return "red";
   }
 
+  const formatter = getCurrencyFormatter(currentLocale);
   const style = {
     fontSize: `${textHeight}vw`,
     color: getColor(),
     fontWeight: "bold",
   };
-
-  let formatter = {};
-  if (!currentLocale._id) {
-    const defaultLocale = locale.getDefaultLocale();
-    formatter = getCurrencyFormatter(defaultLocale);
-  } else {
-    formatter = getCurrencyFormatter(currentLocale);
-  }
-
   return (
     <React.Fragment>
       <div className="text-left overflow-auto container-fluid" style={style}>

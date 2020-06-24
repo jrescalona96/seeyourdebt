@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Table from "./common/table";
 import PayForm from "./payForm";
+import { getCurrencyFormatter } from "../utils/formatter";
 
 class DebtTable extends Component {
   columns = [
@@ -16,13 +17,26 @@ class DebtTable extends Component {
   ];
 
   render() {
-    const { data, onSort, sortColumn } = this.props;
+    const { data, onSort, sortColumn, currentLocale } = this.props;
+
+    const formatter = getCurrencyFormatter(currentLocale);
+    const balance = formatter.format(data.balance);
+    const total = formatter.format(data.balance);
+    const totalCount = data.debts.reduce((total, item) => {
+      if (!item.isPaid) total++;
+      return total;
+    }, 0);
+
+    let message = "";
+    if (totalCount > 1) message = `${totalCount} Debts Remaining `;
+    else if (totalCount === 1) message = `${totalCount} Debt Left`;
+    else message = "All Paid Up!";
 
     return (
       <React.Fragment>
-        <h3>{data.debts.length} Debts Total</h3>
+        <h3>{message}</h3>
         <h6>
-          {data.balance} of {data.total} Paid
+          {balance} of {total}
         </h6>
         <Table
           columns={this.columns}

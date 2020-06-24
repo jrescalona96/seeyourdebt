@@ -34,7 +34,7 @@ class Debts extends Component {
   };
 
   handlePay = (data) => {
-    const debts = debt.payDebt(data);
+    const { debts } = debt.payDebt(data);
     this.setState({ debts });
   };
 
@@ -43,20 +43,7 @@ class Debts extends Component {
     this.setState({ currentLocale });
   };
 
-  // start here
-  mapToModelView = (data) => {
-    let currentLocale = { ...this.state.currentLocale };
-
-    if (!currentLocale.currency)
-      currentLocale = {
-        _id: "en-US",
-        language: "en-US",
-        name: "United States",
-        currency: "USD",
-      };
-
-    const formatter = getCurrencyFormatter(currentLocale);
-
+  mapToModelView = (data, formatter) => {
     return data.map((item) => ({
       _id: item._id,
       date: item.date,
@@ -68,10 +55,20 @@ class Debts extends Component {
   };
 
   getPageDate = () => {
-    const { debts: data, sortColumn } = this.state;
+    // sort data
+    const { debts: data, sortColumn, currentLocale } = this.state;
+    // get formatter
+    const formatter = getCurrencyFormatter(currentLocale);
+
     const orderedDebts = _.orderBy(data, [sortColumn.path], [sortColumn.order]);
-    const debts = this.mapToModelView(orderedDebts);
+
+    // format data
+    const debts = this.mapToModelView(orderedDebts, formatter);
+
+    // get total balance
     const balance = data.reduce((total, item) => total + item.balance, 0);
+
+    // get original total debt
     const total = data.reduce((total, item) => total + item.total, 0);
 
     return { balance, total, debts };

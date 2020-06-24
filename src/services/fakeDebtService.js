@@ -7,7 +7,6 @@ let debts = [
     total: 150,
     balance: 150,
     lender: "Chase Unlimited",
-    isPaid: false,
   },
   {
     _id: "1",
@@ -15,7 +14,6 @@ let debts = [
     total: 500,
     balance: 500,
     lender: "Kinecta",
-    isPaid: false,
   },
   {
     _id: "2",
@@ -23,7 +21,6 @@ let debts = [
     total: 22300,
     balance: 22300,
     lender: "Nelnet",
-    isPaid: false,
   },
   {
     _id: "3",
@@ -31,7 +28,6 @@ let debts = [
     total: 100,
     balance: 100,
     lender: "Apple",
-    isPaid: false,
   },
   {
     _id: "4",
@@ -39,9 +35,10 @@ let debts = [
     total: 750,
     balance: 750,
     lender: "USCIS",
-    isPaid: false,
   },
 ];
+
+let debtsHistory = [];
 
 export function getDebts() {
   return debts;
@@ -52,13 +49,22 @@ export function getDebt(_id) {
 }
 
 export function payDebt({ _id, amount }) {
-  const amt = parseFloat(amount);
-  debts = debts.map((item) => {
-    if (item._id === _id) item.balance -= amt;
-    if (item.balance <= 0) item.isPaid = true;
-    return item;
+  let paid = [];
+  let remaining = [];
+
+  debts.forEach((item) => {
+    if (item._id === _id) item.balance -= parseFloat(amount);
+    if (item.balance) remaining.push(item);
+    else {
+      item.date = date.getDateToday();
+      paid.push(item);
+    } // move this somewhere else
   });
-  return debts;
+
+  debts = remaining;
+  debtsHistory = paid;
+
+  return { debts, debtsHistory };
 }
 
 export function addDebt({ balance, lender }) {
@@ -70,7 +76,6 @@ export function addDebt({ balance, lender }) {
     total: amount,
     balance: amount,
     lender: lender,
-    isPaid: false,
   };
 
   debts.push(data);

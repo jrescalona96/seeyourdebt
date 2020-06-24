@@ -21,19 +21,18 @@ class Form extends Component {
     const field = { [name]: value };
     const localSchema = Joi.object().keys({ [name]: this.schema[name] });
     const { error } = localSchema.validate(field);
-
     return error ? error.details[0].message : null;
   };
 
   handleChange = ({ currentTarget: input }) => {
-    const errors = { ...this.state.errors };
-
     const propertyErrorMessage = this.validateProperty(input);
+
+    let errors = { ...this.state.errors };
     if (propertyErrorMessage) errors[input.name] = propertyErrorMessage;
+    else errors = {};
 
     const data = { ...this.state.data };
     data[input.name] = input.value;
-
     this.setState({ data, errors });
   };
 
@@ -45,11 +44,11 @@ class Form extends Component {
     else this.doSubmit();
   };
 
-  renderSubmitButton(label, isDisabled) {
+  renderSubmitButton(label) {
     return (
       <button
         className="btn btn-primary btn-sm btn-block"
-        disabled={isDisabled}
+        disabled={this.validate()}
       >
         {label}
       </button>

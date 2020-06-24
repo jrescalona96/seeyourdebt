@@ -35,16 +35,11 @@ class PayForm extends Form {
   }
 
   render() {
-    const { item } = this.props;
     return (
-      <React.Fragment>
-        <form className="row" onSubmit={this.handleSubmit}>
-          <div>{this.renderInput("amount")}</div>
-          <div className="ml-2">
-            {this.renderSubmitButton("Pay", item.isPaid)}
-          </div>
-        </form>
-      </React.Fragment>
+      <form className="row container" onSubmit={this.handleSubmit}>
+        <div>{this.renderInput("amount")}</div>
+        <div className="ml-2">{this.renderSubmitButton("Pay")}</div>
+      </form>
     );
   }
 }
