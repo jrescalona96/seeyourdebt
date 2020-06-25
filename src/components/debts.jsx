@@ -12,18 +12,39 @@ import _ from "lodash";
 class Debts extends Component {
   state = {
     debts: [],
-    debtsHistory: [],
+    debtHistory: [],
     sortColumn: {},
     currentLocale: {},
     locales: [],
   };
 
   componentDidMount() {
-    const debts = debt.getDebts(); // pull from local storage
     const sortColumn = { path: "balance", order: "asc" };
     const currentLocale = locale.getDefaultLocale(); // pull from local storage
     const locales = locale.getLocales(); // pull from local storage
-    this.setState({ debts, sortColumn, locales, currentLocale });
+
+    let data = localStorage.getItem("data");
+    if (!data) {
+      data = {
+        debts: [], //array of debts
+        debtsHistory: [], //array of debts
+        sortColumn: { path: "balance", order: "asc" },
+        currentLocale: {
+          _id: "ja-JP",
+          languageCode: "ja-JP",
+          name: "Japan",
+          currency: "JPY",
+        },
+        locales: locales, //array available locales,
+      };
+      localStorage.setItem("data", JSON.stringify(data));
+    }
+
+    data = JSON.parse(localStorage.getItem("data"));
+
+    const debts = debt.getDebts();
+    const debtsHistory = debt.getDebtHistory();
+    this.setState({ debts, debtsHistory, sortColumn, locales, currentLocale });
   }
 
   handleAdd = (data) => {
@@ -36,8 +57,10 @@ class Debts extends Component {
   };
 
   handlePay = (data) => {
-    const { debts } = debt.payDebt(data);
-    this.setState({ debts });
+    debt.payDebt(data);
+    const debts = debt.getDebts();
+    const debtHistory = debt.getDebtHistory();
+    this.setState({ debts, debtHistory });
   };
 
   handleLocaleChange = async (languageCode) => {
@@ -67,22 +90,26 @@ class Debts extends Component {
 
   getPageDate = () => {
     // sort data
-    const { debts: data, sortColumn, currentLocale } = this.state;
+    const { debts: remainingDebts, sortColumn, currentLocale } = this.state;
     // get formatter
     const formatter = getCurrencyFormatter(currentLocale);
 
-    const orderedDebts = _.orderBy(data, [sortColumn.path], [sortColumn.order]);
+    const orderedDebts = _.orderBy(
+      remainingDebts,
+      [sortColumn.path],
+      [sortColumn.order]
+    );
 
     // format data
     const debts = this.mapToModelView(orderedDebts, formatter);
 
     // get total balance
-    const balance = data.reduce((total, item) => total + item.balance, 0);
+    const balance = debt.getBalance();
 
     // get original total debt
-    const total = data.reduce((total, item) => total + item.total, 0);
+    const total = debt.getTotal();
 
-    return { balance, total, debts };
+    return { debts, balance, total };
   };
 
   render() {
@@ -94,7 +121,7 @@ class Debts extends Component {
         <div className="row sticky-top">
           <div className="col-12 col-lg-6">
             <DebtTable
-              data={{ balance, total, debts }}
+              data={{ debts, total, balance }}
               onPay={(data) => this.handlePay(data)}
               onSort={(col) => this.handleSort(col)}
               sortColumn={this.state.sortColumn}
@@ -113,13 +140,13 @@ class Debts extends Component {
               </div>
             </div>
           </div>
-          <div className="col-12 col-lg-6">
-            <TotalDebt
-              total={total}
-              balance={balance}
-              currentLocale={currentLocale}
-            />
-          </div>
+        </div>
+        <div className="mx-auto">
+          <TotalDebt
+            total={total}
+            balance={balance}
+            currentLocale={currentLocale}
+          />
         </div>
       </React.Fragment>
     );

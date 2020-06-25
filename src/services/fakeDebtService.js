@@ -1,52 +1,70 @@
 import * as date from "./dateService";
 
-let debts = [];
-let debtsHistory = [];
+let data = {
+  debts: [
+    {
+      _id: "0",
+      date: "01/01/2020",
+      total: 150,
+      balance: 150,
+      lender: "Chase Unlimited",
+    },
+    {
+      _id: "1",
+      date: "01/02/2020",
+      total: 500,
+      balance: 500,
+      lender: "Kinecta",
+    },
+  ],
+  debtHistory: [],
+};
 
-export function getDebts() {
-  return debts;
-}
+export const getDebts = () => {
+  return data.debts;
+};
 
-export function getDebt(_id) {
-  return debts.find((item) => item._id === _id);
-}
+export const getDebtHistory = () => {
+  return data.debtHistory;
+};
 
-export function payDebt({ _id, amount }) {
-  let paid = [];
-  let remaining = [];
+export const getDebt = (_id) => {
+  return data.debts.find((item) => item._id === _id);
+};
 
-  debts.forEach((item) => {
+export const getBalance = () => {
+  return data.debts.reduce((total, item) => total + item.balance, 0);
+};
+
+export const getTotal = () => {
+  const balance = data.debts.reduce((total, item) => total + item.total, 0);
+  return data.debtHistory.reduce((total, item) => total + item.total, balance);
+};
+
+export const payDebt = ({ _id, amount }) => {
+  let debts = [];
+  let debtHistory = [];
+  data.debts.forEach((item) => {
     if (item._id === _id) item.balance -= parseFloat(amount);
-    if (item.balance) remaining.push(item);
-    else {
-      item.date = date.getDateToday();
-      paid.push(item);
-    } // move this somewhere else
+    if (item.balance > 0) debts.push(item);
+    else debtHistory.push(item);
   });
+  data.debts = debts;
+  data.debtHistory = debtHistory;
+};
 
-  debts = remaining;
-  debtsHistory = paid;
-
-  return { debts, debtsHistory };
-}
-
-export function addDebt({ balance, lender }) {
-  const _id = (debts.length + 1).toString();
+export const addDebt = ({ balance, lender }) => {
+  const _id = data.debts.length;
   const amount = parseFloat(balance);
-  const data = {
+  data.debts.push({
     _id: _id,
     date: date.getDateToday(),
     total: amount,
     balance: amount,
     lender: lender,
-  };
+  });
 
-  debts.push(data);
-  return debts;
-}
+  return data.debts;
+};
 
-export function updateData(data) {
-  debts = data;
-}
-
-export default { getDebts, getDebt, payDebt, updateData };
+export default { getDebts, getDebt, payDebt };

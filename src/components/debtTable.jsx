@@ -18,10 +18,9 @@ class DebtTable extends Component {
 
   render() {
     const { data, onSort, sortColumn, currentLocale } = this.props;
-
     const formatter = getCurrencyFormatter(currentLocale);
     const balance = formatter.format(data.balance);
-    const total = formatter.format(data.balance);
+    const total = formatter.format(data.total);
     const totalCount = data.debts.reduce((total, item) => {
       if (!item.isPaid) total++;
       return total;

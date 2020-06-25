@@ -17,13 +17,15 @@ function TotalDebt({ total, balance, currentLocale }) {
     fontSize: `${textHeight}vw`,
     color: getColor(),
     fontWeight: "bold",
+    position: "absolute",
+    bottom: "2vh",
+    overflow: "auto",
+    overflowY: "hidden",
   };
   return (
-    <React.Fragment>
-      <div className="text-center overflow-auto container-fluid" style={style}>
-        {balance > 0 ? formatter.format(balance) : "You're Debt Free!"}
-      </div>
-    </React.Fragment>
+    <div style={style}>
+      {balance > 0 ? formatter.format(balance) : "You're Debt Free!"}
+    </div>
   );
 }
 
