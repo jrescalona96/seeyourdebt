@@ -20,7 +20,7 @@ function TotalDebt({ total, balance, currentLocale }) {
   };
   return (
     <React.Fragment>
-      <div className="text-left overflow-auto container-fluid" style={style}>
+      <div className="text-center overflow-auto container-fluid" style={style}>
         {balance > 0 ? formatter.format(balance) : "You're Debt Free!"}
       </div>
     </React.Fragment>

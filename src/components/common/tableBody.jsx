@@ -12,7 +12,7 @@ function TableBody({ columns, data }) {
   };
 
   return (
-    <tbody>
+    <tbody className="overflow-auto">
       {data.map((item) => (
         <tr key={item._id}>
           {columns.map((col) => (

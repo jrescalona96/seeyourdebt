@@ -12,6 +12,7 @@ import _ from "lodash";
 class Debts extends Component {
   state = {
     debts: [],
+    debtsHistory: [],
     sortColumn: {},
     currentLocale: {},
     locales: [],
@@ -91,30 +92,35 @@ class Debts extends Component {
     return (
       <React.Fragment>
         <div className="row sticky-top">
-          <div className={"col-12 col-md-6 m-2 p-2"}>
+          <div className="col-12 col-lg-6">
             <DebtTable
               data={{ balance, total, debts }}
               onPay={(data) => this.handlePay(data)}
               onSort={(col) => this.handleSort(col)}
               sortColumn={this.state.sortColumn}
             />
+
+            <div className="row">
+              <div className="col-12 col-md-6">
+                <AddForm onAdd={(data) => this.handleAdd(data)} />
+              </div>
+              <div className="col-12 col-md-6">
+                <CurrencyForm
+                  locales={locales}
+                  currentLocale={currentLocale}
+                  onLocaleChange={this.handleLocaleChange}
+                />
+              </div>
+            </div>
           </div>
-          <div className="col-12 col-md-3 m-2 p-2">
-            <AddForm onAdd={(data) => this.handleAdd(data)} />
-          </div>
-          <div className="col-12 col-md-2 m-2 p-2">
-            <CurrencyForm
-              locales={locales}
+          <div className="col-12 col-lg-6">
+            <TotalDebt
+              total={total}
+              balance={balance}
               currentLocale={currentLocale}
-              onLocaleChange={this.handleLocaleChange}
             />
           </div>
         </div>
-        <TotalDebt
-          total={total}
-          balance={balance}
-          currentLocale={currentLocale}
-        />
       </React.Fragment>
     );
   }

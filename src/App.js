@@ -3,7 +3,11 @@ import Debts from "./components/debts";
 import "./App.css";
 
 function App() {
-  return <Debts />;
+  return (
+    <main className="container-fluid">
+      <Debts />
+    </main>
+  );
 }
 
 export default App;

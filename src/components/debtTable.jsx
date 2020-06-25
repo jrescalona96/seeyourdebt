@@ -38,12 +38,14 @@ class DebtTable extends Component {
         <h6>
           {balance} of {total}
         </h6>
-        <Table
-          columns={this.columns}
-          onSort={(col) => onSort(col)}
-          sortColumn={sortColumn}
-          data={data.debts}
-        />
+        <div id="debtTable">
+          <Table
+            columns={this.columns}
+            onSort={(col) => onSort(col)}
+            sortColumn={sortColumn}
+            data={data.debts}
+          />
+        </div>
       </React.Fragment>
     );
   }

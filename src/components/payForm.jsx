@@ -37,7 +37,7 @@ class PayForm extends Form {
   render() {
     return (
       <form className="row container" onSubmit={this.handleSubmit}>
-        <div className="w-50">{this.renderInput("amount")}</div>
+        {this.renderInput("amount")}
         <div className="ml-2">{this.renderSubmitButton("Pay")}</div>
       </form>
     );

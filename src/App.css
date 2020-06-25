@@ -4,7 +4,7 @@ body {
 }
 
 #debtTable {
-  height: 500px;
+  max-height: 25vw;
   overflow: auto;
 }
 
@@ -13,6 +13,5 @@ body {
 }
 
 .table tr {
-  border-top: hidden;
   border-bottom: hidden;
 }
