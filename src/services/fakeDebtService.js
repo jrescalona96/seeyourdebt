@@ -1,23 +1,14 @@
 import * as date from "./dateService";
+import * as crud from "./crudService";
 
 let data = {
-  debts: [
-    {
-      _id: "0",
-      date: "01/01/2020",
-      total: 150,
-      balance: 150,
-      lender: "Chase Unlimited",
-    },
-    {
-      _id: "1",
-      date: "01/02/2020",
-      total: 500,
-      balance: 500,
-      lender: "Kinecta",
-    },
-  ],
+  debts: [],
   debtHistory: [],
+};
+
+export const initialize = (localData) => {
+  data.debts = localData.debts;
+  data.debtHistory = localData.debtHistory;
 };
 
 export const getDebts = () => {
@@ -43,17 +34,24 @@ export const getTotal = () => {
 
 export const payDebt = ({ _id, amount }) => {
   let debts = [];
-  let debtHistory = [];
+  let debtHistory = [...data.debtHistory];
   data.debts.forEach((item) => {
     if (item._id === _id) item.balance -= parseFloat(amount);
-    if (item.balance > 0) debts.push(item);
-    else debtHistory.push(item);
+    if (item.balance <= 0) debtHistory.push(item);
+    else debts.push(item);
   });
+
   data.debts = debts;
   data.debtHistory = debtHistory;
+  crud.setData("debts", data.debts);
+  crud.setData("debtHistory", data.debtHistory);
+
+  if (debts.length === 0) _resetDebt();
+  return { debts, debtHistory };
 };
 
 export const addDebt = ({ balance, lender }) => {
+  if (data.debts.length === 0) _resetDebtHistory();
   const _id = data.debts.length;
   const amount = parseFloat(balance);
   data.debts.push({
@@ -63,8 +61,16 @@ export const addDebt = ({ balance, lender }) => {
     balance: amount,
     lender: lender,
   });
-
+  crud.setData("debts", data.debts);
   return data.debts;
+};
+
+const _resetDebtHistory = () => {
+  data.debtHistory = [];
+  crud.setData("debtHistory", []);
+};
+const _resetDebt = () => {
+  crud.setData("debtHistory", []);
 };
 
 export default { getDebts, getDebt, payDebt };

@@ -6,8 +6,10 @@ import CurrencyForm from "./currencyForm";
 import * as locale from "../services/localeService";
 import * as debt from "../services/fakeDebtService";
 import * as currency from "../services/currencyService";
+import * as user from "../services/userService";
 import { getCurrencyFormatter } from "../utils/formatter";
 import _ from "lodash";
+import crud from "../services/crudService";
 
 class Debts extends Component {
   state = {
@@ -19,28 +21,14 @@ class Debts extends Component {
   };
 
   componentDidMount() {
-    const sortColumn = { path: "balance", order: "asc" };
+    let localData = crud.getData();
+    if (!localData) localData = user.initializeUser();
+
+    debt.initialize(localData);
+
+    const sortColumn = localData.currentLocale;
     const currentLocale = locale.getDefaultLocale(); // pull from local storage
     const locales = locale.getLocales(); // pull from local storage
-
-    let data = localStorage.getItem("data");
-    if (!data) {
-      data = {
-        debts: [], //array of debts
-        debtsHistory: [], //array of debts
-        sortColumn: { path: "balance", order: "asc" },
-        currentLocale: {
-          _id: "ja-JP",
-          languageCode: "ja-JP",
-          name: "Japan",
-          currency: "JPY",
-        },
-        locales: locales, //array available locales,
-      };
-      localStorage.setItem("data", JSON.stringify(data));
-    }
-
-    data = JSON.parse(localStorage.getItem("data"));
 
     const debts = debt.getDebts();
     const debtsHistory = debt.getDebtHistory();
@@ -57,9 +45,7 @@ class Debts extends Component {
   };
 
   handlePay = (data) => {
-    debt.payDebt(data);
-    const debts = debt.getDebts();
-    const debtHistory = debt.getDebtHistory();
+    const { debts, debtHistory } = debt.payDebt(data);
     this.setState({ debts, debtHistory });
   };
 
