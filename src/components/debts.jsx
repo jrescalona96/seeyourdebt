@@ -156,7 +156,7 @@ class Debts extends Component {
     // get original total debt
     const total = this.getTotal();
     //convert data for debtConversionTable
-    const convertedTotalList = this.getConvertedTotalList(total, locales);
+    const convertedTotalList = this.getConvertedTotalList(balance, locales);
 
     return {
       debts,
