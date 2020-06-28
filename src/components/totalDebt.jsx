@@ -2,7 +2,7 @@ import React from "react";
 import { getCurrencyFormatter } from "../utils/formatter";
 
 function TotalDebt({ total, balance, currentLocale }) {
-  const scaleFactor = 40;
+  const scaleFactor = 20;
   const textHeight = balance > 0 ? scaleFactor / (total / balance) : 8;
 
   function getColor() {

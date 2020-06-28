@@ -2,14 +2,14 @@ import React from "react";
 import Joi from "@hapi/joi";
 import Form from "./common/form";
 
-class CurrencyForm extends Form {
+class LocaleForm extends Form {
   state = {
     data: { locale: "" },
     errors: {},
   };
 
   schema = {
-    locale: Joi.string().required(),
+    locale: Joi.string().required().not(""),
   };
 
   doSubmit() {
@@ -19,6 +19,7 @@ class CurrencyForm extends Form {
 
   render() {
     const { locales } = this.props;
+
     return (
       <form onSubmit={this.handleSubmit}>
         <h3>Change Locale</h3>
@@ -33,4 +34,4 @@ class CurrencyForm extends Form {
   }
 }
 
-export default CurrencyForm;
+export default LocaleForm;

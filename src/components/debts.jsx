@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import TotalDebt from "./totalDebt";
 import DebtTable from "./debtTable";
 import AddForm from "./addForm";
-import CurrencyForm from "./currencyForm";
+import LocaleForm from "./localeForm";
 import * as locale from "../services/localeService";
 import * as debt from "../services/fakeDebtService";
 import * as currency from "../services/currencyService";
@@ -17,21 +17,24 @@ class Debts extends Component {
     debtHistory: [],
     sortColumn: {},
     currentLocale: {},
-    locales: [],
+    locales: [
+      {
+        _id: "",
+        name: "Choose One",
+      },
+    ],
   };
 
   componentDidMount() {
-    let localData = crud.getData();
-    if (!localData) localData = user.initializeUser();
+    const localData = crud.getData();
+    const data = localData ? localData : user.initializeNewUser();
 
-    debt.initialize(localData);
-
-    const sortColumn = localData.currentLocale;
-    const currentLocale = locale.getDefaultLocale(); // pull from local storage
-    const locales = locale.getLocales(); // pull from local storage
-
-    const debts = debt.getDebts();
-    const debtsHistory = debt.getDebtHistory();
+    const debts = data.debts;
+    const debtsHistory = data.debtHistory;
+    const sortColumn = data.sortColumn;
+    const currentLocale = data.currentLocale;
+    const locales = [...this.state.locales, ...locale.getLocales()];
+    debt.initialize(data);
     this.setState({ debts, debtsHistory, sortColumn, locales, currentLocale });
   }
 
@@ -60,6 +63,7 @@ class Debts extends Component {
       });
 
       this.setState({ currentLocale: newLocale, debts });
+      crud.setData("currentLocale", newLocale);
     }
   };
 
@@ -74,12 +78,13 @@ class Debts extends Component {
     }));
   };
 
-  getPageDate = () => {
-    // sort data
+  getPageData = () => {
     const { debts: remainingDebts, sortColumn, currentLocale } = this.state;
+
     // get formatter
     const formatter = getCurrencyFormatter(currentLocale);
 
+    // sort data
     const orderedDebts = _.orderBy(
       remainingDebts,
       [sortColumn.path],
@@ -95,11 +100,11 @@ class Debts extends Component {
     // get original total debt
     const total = debt.getTotal();
 
-    return { debts, balance, total };
+    return { debts, balance, total, formatter };
   };
 
   render() {
-    const { debts, total, balance } = this.getPageDate();
+    const { debts, total, balance, formatter } = this.getPageData();
     const { locales, currentLocale } = this.state;
 
     return (
@@ -108,6 +113,7 @@ class Debts extends Component {
           <div className="col-12 col-lg-6">
             <DebtTable
               data={{ debts, total, balance }}
+              formatter={formatter}
               onPay={(data) => this.handlePay(data)}
               onSort={(col) => this.handleSort(col)}
               sortColumn={this.state.sortColumn}
@@ -118,7 +124,7 @@ class Debts extends Component {
                 <AddForm onAdd={(data) => this.handleAdd(data)} />
               </div>
               <div className="col-12 col-md-6">
-                <CurrencyForm
+                <LocaleForm
                   locales={locales}
                   currentLocale={currentLocale}
                   onLocaleChange={this.handleLocaleChange}

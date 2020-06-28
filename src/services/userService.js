@@ -1,20 +1,16 @@
 import * as crud from "./crudService";
+import { getDefaultLocale } from "./localeService";
 
-export const initializeUser = () => {
+export const initializeNewUser = () => {
   const data = {
-    debts: [], //array of debts
-    debtHistory: [], //array of debts
+    debts: [],
+    debtHistory: [],
     sortColumn: { path: "balance", order: "asc" },
-    currentLocale: {
-      _id: "ja-JP",
-      languageCode: "ja-JP",
-      name: "Japan",
-      currency: "JPY",
-    },
-    locales: [], //array available locales,
+    currentLocale: getDefaultLocale(),
   };
+
   crud.setData("data", data);
   return data;
 };
 
-export default { initializeUser };
+export default { initializeNewUser };

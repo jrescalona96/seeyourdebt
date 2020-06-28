@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Table from "./common/table";
 import PayForm from "./payForm";
-import { getCurrencyFormatter } from "../utils/formatter";
 
 class DebtTable extends Component {
   columns = [
@@ -14,23 +13,34 @@ class DebtTable extends Component {
         <PayForm item={item} onPay={(data) => this.props.onPay(data)} />
       ),
     },
+    {
+      key: "delete",
+      content: (item) => <h1>Delete</h1>,
+    },
   ];
 
-  render() {
-    const { data, onSort, sortColumn, currentLocale } = this.props;
-    const formatter = getCurrencyFormatter(currentLocale);
+  mapToModelView = () => {
+    const { data, formatter } = this.props;
     const balance = formatter.format(data.balance);
     const total = formatter.format(data.total);
-    const totalCount = data.debts.reduce((total, item) => {
-      if (!item.isPaid) total++;
-      return total;
-    }, 0);
+    const totalCount = data.debts.length;
 
     let message = "";
     if (totalCount > 1) message = `${totalCount} Debts Remaining `;
     else if (totalCount === 1) message = `${totalCount} Debt Left`;
     else message = "All Paid Up!";
 
+    return { balance, total, totalCount, message };
+  };
+
+  render() {
+    const {
+      data: { debts },
+      onSort,
+      sortColumn,
+    } = this.props;
+
+    const { balance, total, message } = this.mapToModelView();
     return (
       <React.Fragment>
         <h3>{message}</h3>
@@ -42,7 +52,7 @@ class DebtTable extends Component {
             columns={this.columns}
             onSort={(col) => onSort(col)}
             sortColumn={sortColumn}
-            data={data.debts}
+            data={debts}
           />
         </div>
       </React.Fragment>
