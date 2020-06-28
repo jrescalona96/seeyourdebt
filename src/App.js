@@ -6,7 +6,7 @@ import "./App.css";
 function App() {
   return (
     <React.Fragment>
-      <NavBar title="utangmo" />
+      <NavBar title="DebtCounter" />
       <main className="container-fluid">
         <Debts />
       </main>
