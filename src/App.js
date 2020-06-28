@@ -1,12 +1,16 @@
 import React from "react";
 import Debts from "./components/debts";
+import NavBar from "./components/navBar";
 import "./App.css";
 
 function App() {
   return (
-    <main className="container-fluid">
-      <Debts />
-    </main>
+    <React.Fragment>
+      <NavBar title="utangmo" />
+      <main className="container-fluid">
+        <Debts />
+      </main>
+    </React.Fragment>
   );
 }
 

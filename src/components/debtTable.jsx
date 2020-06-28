@@ -26,7 +26,6 @@ class DebtTable extends Component {
       classes: "btn btn-danger btn-sm",
       label: "Delete",
     };
-
     return (
       <ActionButton
         decoration={decoration}
@@ -36,9 +35,9 @@ class DebtTable extends Component {
   };
 
   mapToModelView = () => {
-    const { data, formatter } = this.props;
-    const balance = formatter.format(data.balance);
-    const total = formatter.format(data.total);
+    const { data, currencyFormatter } = this.props;
+    const balance = currencyFormatter.format(data.balance);
+    const total = currencyFormatter.format(data.total);
     const totalCount = data.debts.length;
 
     let message = "";
@@ -59,7 +58,7 @@ class DebtTable extends Component {
     const { balance, total, message } = this.mapToModelView();
     return (
       <React.Fragment>
-        <h3>{message}</h3>
+        <h4>{message}</h4>
         <h6>
           {balance} of {total}
         </h6>

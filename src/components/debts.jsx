@@ -9,6 +9,7 @@ import * as api from "../services/api";
 import * as currency from "../services/currencyService";
 import * as crud from "../services/crudService";
 import { getCurrencyFormatter } from "../utils/formatter";
+import DebtConversionTable from "./debtConversionTable";
 
 class Debts extends Component {
   state = {
@@ -50,16 +51,21 @@ class Debts extends Component {
   };
 
   handleLocaleChange = async (languageCode) => {
-    if (languageCode !== this.state.currentLocale.languageCode) {
+    const { currentLocale, debts } = this.state;
+
+    if (languageCode !== currentLocale.languageCode) {
       const newLocale = locale.getLocale(languageCode);
-      const forex = await currency.getForexRate(newLocale.currency);
-      const debts = this.state.debts.map((item) => {
+      const forex = await currency.getForexRate(
+        newLocale.currency,
+        currentLocale.currency
+      );
+      const newDebts = debts.map((item) => {
         item.balance = item.balance * forex;
         item.total = item.total * forex;
         return item;
       });
 
-      this.setState({ currentLocale: newLocale, debts });
+      this.setState({ currentLocale: newLocale, debts: newDebts });
       crud.setData("currentLocale", newLocale);
       crud.setData("debts", this.statedebts);
     }
@@ -70,12 +76,12 @@ class Debts extends Component {
     this.setState({ debts });
   };
 
-  mapToModelView = (data, formatter) => {
+  mapToModelView = (data, currencyFormatter) => {
     return data.map((item) => ({
       _id: item._id,
       date: item.date,
-      total: formatter.format(item.total),
-      balance: formatter.format(item.balance),
+      total: currencyFormatter.format(item.total),
+      balance: currencyFormatter.format(item.balance),
       lender: item.lender,
       isPaid: item.isPaid,
     }));
@@ -101,19 +107,19 @@ class Debts extends Component {
       [sortColumn.order]
     );
     // get formatter
-    const formatter = getCurrencyFormatter(currentLocale);
+    const currencyFormatter = getCurrencyFormatter(currentLocale);
     // format data
-    const debts = this.mapToModelView(orderedDebts, formatter);
+    const debts = this.mapToModelView(orderedDebts, currencyFormatter);
     // get total balance
     const balance = this.getBalance();
     // get original total debt
     const total = this.getTotal();
 
-    return { debts, balance, total, formatter };
+    return { debts, balance, total, currencyFormatter };
   };
 
   render() {
-    const { debts, total, balance, formatter } = this.getPageData();
+    const { debts, total, balance, currencyFormatter } = this.getPageData();
     const { locales, currentLocale } = this.state;
 
     return (
@@ -122,13 +128,12 @@ class Debts extends Component {
           <div className="col-12 col-lg-6">
             <DebtTable
               data={{ debts, total, balance }}
-              formatter={formatter}
+              currencyFormatter={currencyFormatter}
               onPay={(data) => this.handlePay(data)}
               onSort={(col) => this.handleSort(col)}
               onDelete={(col) => this.handleDelete(col)}
               sortColumn={this.state.sortColumn}
             />
-
             <div className="row">
               <div className="col-12 col-md-6">
                 <AddForm onAdd={(data) => this.handleAdd(data)} />
@@ -142,12 +147,19 @@ class Debts extends Component {
               </div>
             </div>
           </div>
+          <div className="col-12 col-lg-6">
+            <DebtConversionTable
+              locales={locales}
+              total={total}
+              currentLocale={currentLocale}
+            />
+          </div>
         </div>
         <div className="mx-auto">
           <TotalDebt
             total={total}
             balance={balance}
-            currentLocale={currentLocale}
+            currencyFormatter={currencyFormatter}
           />
         </div>
       </React.Fragment>

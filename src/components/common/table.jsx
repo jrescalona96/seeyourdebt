@@ -13,7 +13,6 @@ class Table extends Component {
           onSort={(col) => onSort(col)}
           sortColumn={sortColumn}
         />
-
         <TableBody columns={columns} data={data} />
       </table>
     );

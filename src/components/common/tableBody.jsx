@@ -13,18 +13,20 @@ function TableBody({ columns, data }) {
 
   return (
     <tbody className="overflow-auto">
-      {data.map((item) => (
-        <tr key={item._id}>
-          {columns.map((col) => (
-            <td
-              className="align-middle p-1 m-0 border-bottom-none"
-              key={createKey(item, col)}
-            >
-              {renderCell(item, col)}
-            </td>
-          ))}
-        </tr>
-      ))}
+      {data.map((item) => {
+        return (
+          <tr key={item._id}>
+            {columns.map((col) => (
+              <td
+                className="align-middle p-1 m-0 border-bottom-none"
+                key={createKey(item, col)}
+              >
+                {renderCell(item, col)}
+              </td>
+            ))}
+          </tr>
+        );
+      })}
     </tbody>
   );
 }
