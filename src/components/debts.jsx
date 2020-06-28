@@ -1,15 +1,14 @@
 import React, { Component } from "react";
+import _ from "lodash";
 import TotalDebt from "./totalDebt";
 import DebtTable from "./debtTable";
 import AddForm from "./addForm";
 import LocaleForm from "./localeForm";
 import * as locale from "../services/localeService";
-import * as debt from "../services/fakeDebtService";
+import * as api from "../services/api";
 import * as currency from "../services/currencyService";
-import * as user from "../services/userService";
+import * as crud from "../services/crudService";
 import { getCurrencyFormatter } from "../utils/formatter";
-import _ from "lodash";
-import crud from "../services/crudService";
 
 class Debts extends Component {
   state = {
@@ -26,20 +25,18 @@ class Debts extends Component {
   };
 
   componentDidMount() {
-    const localData = crud.getData();
-    const data = localData ? localData : user.initializeNewUser();
-
+    const data = api.getUserData();
     const debts = data.debts;
     const debtsHistory = data.debtHistory;
     const sortColumn = data.sortColumn;
     const currentLocale = data.currentLocale;
     const locales = [...this.state.locales, ...locale.getLocales()];
-    debt.initialize(data);
+
     this.setState({ debts, debtsHistory, sortColumn, locales, currentLocale });
   }
 
   handleAdd = (data) => {
-    const debts = debt.addDebt(data);
+    const debts = api.addDebt(data);
     this.setState({ debts });
   };
 
@@ -48,7 +45,7 @@ class Debts extends Component {
   };
 
   handlePay = (data) => {
-    const { debts, debtHistory } = debt.payDebt(data);
+    const { debts, debtHistory } = api.payDebt(data);
     this.setState({ debts, debtHistory });
   };
 
@@ -95,10 +92,10 @@ class Debts extends Component {
     const debts = this.mapToModelView(orderedDebts, formatter);
 
     // get total balance
-    const balance = debt.getBalance();
+    const balance = api.getBalance();
 
     // get original total debt
-    const total = debt.getTotal();
+    const total = api.getTotal();
 
     return { debts, balance, total, formatter };
   };
