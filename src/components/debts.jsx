@@ -19,7 +19,6 @@ class Debts extends Component {
     currentLocale: {},
     locales: [],
     forexRates: [],
-    convertedTotalsSortColumn: {},
     convertedTotals: [],
   };
 
@@ -126,7 +125,6 @@ class Debts extends Component {
       sortColumn,
       currentLocale,
       locales: allLocales,
-      convertedTotalsSortColumn,
     } = this.state;
 
     // append "choose one" option to locales
@@ -165,7 +163,6 @@ class Debts extends Component {
       currencyFormatter,
       locales,
       convertedTotalList,
-      convertedTotalsSortColumn,
     };
   };
 
@@ -177,7 +174,6 @@ class Debts extends Component {
       currencyFormatter,
       convertedTotalList,
       locales,
-      convertedTotalsSortColumn,
     } = this.getPageData();
     const { currentLocale } = this.state;
 
