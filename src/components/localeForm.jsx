@@ -9,7 +9,7 @@ class LocaleForm extends Form {
   };
 
   schema = {
-    locale: Joi.string().required().not(""),
+    locale: Joi.string().required().not("").label("Loacale"),
   };
 
   doSubmit() {

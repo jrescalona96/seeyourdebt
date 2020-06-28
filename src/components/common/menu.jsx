@@ -1,6 +1,6 @@
 import React from "react";
 
-function Menu({ name, label, items, onChange }) {
+function Menu({ name, label, items, onChange, error }) {
   return (
     <React.Fragment>
       <div className="form-group ">
@@ -18,6 +18,7 @@ function Menu({ name, label, items, onChange }) {
           ))}
         </select>
       </div>
+      {error && <p className="text-danger">{error}</p>}
     </React.Fragment>
   );
 }

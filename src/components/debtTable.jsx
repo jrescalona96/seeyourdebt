@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Table from "./common/table";
 import PayForm from "./payForm";
-
+import ActionButton from "./common/actionButton";
 class DebtTable extends Component {
   columns = [
     { path: "balance", label: "Balance" },
@@ -9,15 +9,31 @@ class DebtTable extends Component {
     {
       key: "payAmountForm",
       label: "Pay Amount",
-      content: (item) => (
-        <PayForm item={item} onPay={(data) => this.props.onPay(data)} />
-      ),
+      content: (item) => this.renderPayForm(item),
     },
     {
       key: "delete",
-      content: (item) => <h1>Delete</h1>,
+      content: (item) => this.renderDeleteButton(item),
     },
   ];
+
+  renderPayForm = (item) => (
+    <PayForm item={item} onPay={(data) => this.props.onPay(data)} />
+  );
+
+  renderDeleteButton = (item) => {
+    const decoration = {
+      classes: "btn btn-danger btn-sm",
+      label: "Delete",
+    };
+
+    return (
+      <ActionButton
+        decoration={decoration}
+        onClick={() => this.props.onDelete(item)}
+      />
+    );
+  };
 
   mapToModelView = () => {
     const { data, formatter } = this.props;

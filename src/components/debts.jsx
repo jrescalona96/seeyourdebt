@@ -31,7 +31,6 @@ class Debts extends Component {
     const sortColumn = data.sortColumn;
     const currentLocale = data.currentLocale;
     const locales = [...this.state.locales, ...locale.getLocales()];
-
     this.setState({ debts, debtsHistory, sortColumn, locales, currentLocale });
   }
 
@@ -41,6 +40,7 @@ class Debts extends Component {
   };
 
   handleSort = (sortColumn) => {
+    api.setSortColumn(sortColumn);
     this.setState({ sortColumn });
   };
 
@@ -61,7 +61,13 @@ class Debts extends Component {
 
       this.setState({ currentLocale: newLocale, debts });
       crud.setData("currentLocale", newLocale);
+      crud.setData("debts", this.statedebts);
     }
+  };
+
+  handleDelete = (data) => {
+    const debts = api.deleteDebt(data._id);
+    this.setState({ debts });
   };
 
   mapToModelView = (data, formatter) => {
@@ -75,27 +81,33 @@ class Debts extends Component {
     }));
   };
 
+  getBalance = () => {
+    const { debts } = this.state;
+    return debts.reduce((total, item) => total + item.balance, 0);
+  };
+
+  getTotal = () => {
+    const { debts, debtHistory } = this.state;
+    const balance = debts.reduce((total, item) => total + item.total, 0);
+    return debtHistory.reduce((total, item) => total + item.total, balance);
+  };
+
   getPageData = () => {
     const { debts: remainingDebts, sortColumn, currentLocale } = this.state;
-
-    // get formatter
-    const formatter = getCurrencyFormatter(currentLocale);
-
     // sort data
     const orderedDebts = _.orderBy(
       remainingDebts,
       [sortColumn.path],
       [sortColumn.order]
     );
-
+    // get formatter
+    const formatter = getCurrencyFormatter(currentLocale);
     // format data
     const debts = this.mapToModelView(orderedDebts, formatter);
-
     // get total balance
-    const balance = api.getBalance();
-
+    const balance = this.getBalance();
     // get original total debt
-    const total = api.getTotal();
+    const total = this.getTotal();
 
     return { debts, balance, total, formatter };
   };
@@ -113,6 +125,7 @@ class Debts extends Component {
               formatter={formatter}
               onPay={(data) => this.handlePay(data)}
               onSort={(col) => this.handleSort(col)}
+              onDelete={(col) => this.handleDelete(col)}
               sortColumn={this.state.sortColumn}
             />
 

@@ -73,6 +73,7 @@ class Form extends Component {
         items={items}
         name={name}
         label={label}
+        error={this.state.errors[name]}
         onChange={this.handleChange}
       />
     );
