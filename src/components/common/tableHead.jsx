@@ -4,7 +4,7 @@ class TableHead extends Component {
   raiseSort = (path) => {
     const sortColumn = { ...this.props.sortColumn };
 
-    if (!path) {
+    if (!path || !this.props.sortColumn) {
       return;
     } else if (path === sortColumn.path) {
       sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
@@ -17,10 +17,13 @@ class TableHead extends Component {
 
   renderSortIcon = (col) => {
     const { sortColumn } = this.props;
-    if (col.path !== sortColumn.path || col.key) return null;
-    else if (sortColumn.order === "asc")
-      return <i className="ml-1 fa fa-arrow-up" aria-hidden="true"></i>;
-    return <i className="ml-1 fa fa-arrow-down" aria-hidden="true"></i>;
+
+    if (sortColumn) {
+      if (col.path !== sortColumn.path || col.key) return null;
+      else if (sortColumn.order === "asc")
+        return <i className="ml-1 fa fa-arrow-up" aria-hidden="true"></i>;
+      return <i className="ml-1 fa fa-arrow-down" aria-hidden="true"></i>;
+    }
   };
 
   render() {

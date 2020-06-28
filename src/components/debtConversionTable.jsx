@@ -1,56 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Table from "./common/table";
-import { getForexRate } from "../services/currencyService";
 import { getCurrencyFormatter } from "../utils/formatter";
 
-const DebtConversionTable = ({ locales, total, currentLocale }) => {
-  const [sortColumn, setSortColumn] = useState({
-    path: "balance",
-    order: "asc",
+const DebtConversionTable = ({ data: totals, locales }) => {
+  const filtered = totals.filter((item) => item._id !== "");
+  const data = filtered.map((item) => {
+    const locale = locales.find((loc) => loc._id === item._id);
+    const formatter = getCurrencyFormatter(locale);
+    const total = formatter.format(item.total);
+    return { _id: item._id, total, country: item.country };
   });
-
-  const [localeBalanceList, setLocaleBalanceList] = useState([]);
 
   const columns = [
-    {
-      path: "country",
-      label: "Country",
-    },
-    { path: "balance", label: "Balance" },
+    { path: "country", label: "Country" },
+    { path: "total", label: "Total" },
   ];
-
-  useEffect(() => {
-    const data = locales.filter((loc) => loc.currency);
-    formatData(data).then((value) => {
-      setLocaleBalanceList(value);
-    });
-  });
-
-  const formatData = (data) => {
-    return Promise.all(
-      data.map(async (item) => {
-        const forex = await getForexRate(item.currency, currentLocale.currency);
-        const currencyFormatter = getCurrencyFormatter(item);
-        const balance = currencyFormatter.format(total * forex);
-        const country = item.name;
-        const _id = `${country}-${balance}`;
-        return { _id, country, balance };
-      })
-    );
-  };
-
-  const handleChangeSort = (sortColumn) => {
-    setSortColumn(sortColumn);
-  };
 
   return (
     <React.Fragment>
-      <Table
-        columns={columns}
-        data={localeBalanceList}
-        sortColumn={sortColumn}
-        onSort={(sortColumn) => handleChangeSort(sortColumn)}
-      ></Table>
+      <h4>Look here!</h4>
+      <Table columns={columns} data={data}></Table>
     </React.Fragment>
   );
 };

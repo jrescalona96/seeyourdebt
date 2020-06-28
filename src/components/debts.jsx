@@ -17,12 +17,10 @@ class Debts extends Component {
     debtHistory: [],
     sortColumn: {},
     currentLocale: {},
-    locales: [
-      {
-        _id: "",
-        name: "Choose One",
-      },
-    ],
+    locales: [],
+    forexRates: [],
+    convertedTotalsSortColumn: {},
+    convertedTotals: [],
   };
 
   componentDidMount() {
@@ -31,8 +29,21 @@ class Debts extends Component {
     const debtsHistory = data.debtHistory;
     const sortColumn = data.sortColumn;
     const currentLocale = data.currentLocale;
-    const locales = [...this.state.locales, ...locale.getLocales()];
-    this.setState({ debts, debtsHistory, sortColumn, locales, currentLocale });
+    const locales = locale.getLocales();
+
+    const rates = currency.getAllForexRates(currentLocale.currency);
+    rates.then((value) => {
+      const forexRates = value["rates"];
+      this.setState({ forexRates });
+    });
+
+    this.setState({
+      debts,
+      debtsHistory,
+      sortColumn,
+      locales,
+      currentLocale,
+    });
   }
 
   handleAdd = (data) => {
@@ -98,14 +109,44 @@ class Debts extends Component {
     return debtHistory.reduce((total, item) => total + item.total, balance);
   };
 
+  getConvertedTotalList = (amount, locales) => {
+    const { forexRates } = this.state;
+    return locales.map((loc) => {
+      const rate = _.get(forexRates, loc.currency);
+      const country = loc.name;
+      const total = rate * amount;
+      const _id = loc._id;
+      return { _id, total, country };
+    });
+  };
+
   getPageData = () => {
-    const { debts: remainingDebts, sortColumn, currentLocale } = this.state;
+    const {
+      debts: remainingDebts,
+      sortColumn,
+      currentLocale,
+      locales: allLocales,
+      convertedTotalsSortColumn,
+    } = this.state;
+
+    // append "choose one" option to locales
+    const locales = [
+      ...[
+        {
+          _id: "",
+          name: "Choose One",
+        },
+      ],
+      ...allLocales,
+    ];
+
     // sort data
     const orderedDebts = _.orderBy(
       remainingDebts,
       [sortColumn.path],
       [sortColumn.order]
     );
+
     // get formatter
     const currencyFormatter = getCurrencyFormatter(currentLocale);
     // format data
@@ -114,13 +155,31 @@ class Debts extends Component {
     const balance = this.getBalance();
     // get original total debt
     const total = this.getTotal();
+    //convert data for debtConversionTable
+    const convertedTotalList = this.getConvertedTotalList(total, locales);
 
-    return { debts, balance, total, currencyFormatter };
+    return {
+      debts,
+      balance,
+      total,
+      currencyFormatter,
+      locales,
+      convertedTotalList,
+      convertedTotalsSortColumn,
+    };
   };
 
   render() {
-    const { debts, total, balance, currencyFormatter } = this.getPageData();
-    const { locales, currentLocale } = this.state;
+    const {
+      debts,
+      total,
+      balance,
+      currencyFormatter,
+      convertedTotalList,
+      locales,
+      convertedTotalsSortColumn,
+    } = this.getPageData();
+    const { currentLocale } = this.state;
 
     return (
       <React.Fragment>
@@ -148,11 +207,7 @@ class Debts extends Component {
             </div>
           </div>
           <div className="col-12 col-lg-6">
-            <DebtConversionTable
-              locales={locales}
-              total={total}
-              currentLocale={currentLocale}
-            />
+            <DebtConversionTable data={convertedTotalList} locales={locales} />
           </div>
         </div>
         <div className="mx-auto">
