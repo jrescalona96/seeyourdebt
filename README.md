@@ -11,5 +11,8 @@ This web app helps users keep track of their overall Debt by displaying the amou
 - delete debts
 - view all conversions of total debt in other countries
 
+## Technology
+The this app is built using React.js utilizing the browsers localStorage for data persistence.
+
 Check it out here:
 https://debtcounter.herokuapp.com/
