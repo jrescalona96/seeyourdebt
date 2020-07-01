@@ -36,9 +36,13 @@ class PayForm extends Form {
 
   render() {
     return (
-      <form className="row container" onSubmit={this.handleSubmit}>
+      <form
+        id="payForm"
+        className="d-flex align-items-center"
+        onSubmit={this.handleSubmit}
+      >
         {this.renderInput("amount")}
-        <div className="ml-2">{this.renderSubmitButton("Pay")}</div>
+        <div className="ml-2 ">{this.renderSubmitButton("Pay")}</div>
       </form>
     );
   }

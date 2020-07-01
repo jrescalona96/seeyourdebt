@@ -1,7 +1,7 @@
 import React from "react";
 
 function Input({ name, label, onChange, onFocus, value, error }) {
-  let classes = "form-control";
+  let classes = "form-control input-sm";
   classes += error ? " is-invalid" : "";
   return (
     <div>

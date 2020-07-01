@@ -2,7 +2,7 @@ import React from "react";
 
 function NavBar(props) {
   return (
-    <nav className="navbar navbar-light bg-light">
+    <nav className="navbar">
       <h1> {props.title}</h1>
     </nav>
   );

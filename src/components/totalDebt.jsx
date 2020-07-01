@@ -1,30 +1,41 @@
 import React from "react";
+import { Spring } from "react-spring/renderprops";
 
-function TotalDebt({ total, balance, currencyFormatter }) {
-  const scaleFactor = 20;
-  const textHeight = balance > 0 ? scaleFactor / (total / balance) : 8;
+function TotalDebt({ total, previousBalance, balance, currencyFormatter }) {
+  const scaleFactor = total;
+  const percentage = ((balance / total) * 100) / 2;
+  const textHeight = balance > 0 ? percentage : 3;
+
+  console.log(previousBalance, balance);
 
   function getColor() {
-    if (textHeight <= scaleFactor / 4) return "green";
+    if (percentage <= 10) return "green";
     else if (textHeight <= scaleFactor / 3) return "blue";
     else if (textHeight <= scaleFactor / 2) return "orange";
     else return "red";
   }
 
   const style = {
-    fontSize: `${textHeight}vw`,
+    fontSize: `${textHeight}vh`,
     color: getColor(),
     fontWeight: "bold",
-    position: "absolute",
-    bottom: "2vh",
-    overflow: "auto",
-    overflowY: "hidden",
   };
 
   return (
-    <div style={style}>
-      {balance > 0 ? currencyFormatter.format(balance) : "You're Debt Free!"}
-    </div>
+    <React.Fragment>
+      <Spring
+        config={{ tension: 10, friction: 15, delay: 10 }}
+        from={{ number: previousBalance }}
+        to={{ number: balance }}
+      >
+        {(props) => (
+          <div style={style}>
+            {currencyFormatter.format(props.number.toFixed())}
+          </div>
+        )}
+      </Spring>
+      {currencyFormatter.format(balance)}
+    </React.Fragment>
   );
 }
 

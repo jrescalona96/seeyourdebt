@@ -1,7 +1,7 @@
 import React from "react";
 import Debts from "./components/debts";
 import NavBar from "./components/navBar";
-import "./App.css";
+import "./sass/App.scss";
 
 function App() {
   return (

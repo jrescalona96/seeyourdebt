@@ -1,0 +1,78 @@
+@import "./common/_constants";
+
+#root {
+  z-index: -1;
+  background-image: url("../assets/concrete-wall.png"),
+    linear-gradient(#ffffff0f, #fd7f2cac);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #6d5656af;
+}
+
+* {
+  @include easeOut(100);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.table th,
+.table td,
+.table thead th {
+  vertical-align: middle;
+  border-top: none;
+  border-bottom: none;
+}
+
+#totalDebt {
+  overflow: hidden;
+  z-index: -1;
+}
+
+#addForm,
+#localeForm,
+#debtTable,
+#debtConversionTable {
+  background-color: #ffffffaf;
+}
+
+#debtTable,
+#debtConversionTable {
+  table tbody tr td {
+    text-overflow: ellipsis;
+    padding: 0.25em;
+    border-top: none;
+    border-bottom: none;
+  }
+}
+
+#payForm {
+  min-width: fit-content;
+  margin: 0;
+  button {
+    align-self: center;
+  }
+}
+
+#totalDebt {
+  text-align: start;
+  position: absolute;
+  bottom: 1vh;
+  right: 1vh;
+}
+
+@media (min-width: 900px) {
+  #dashboard {
+    display: grid;
+    grid-template-columns: minmax(300px, 400px) 1fr 660px;
+    grid-template-rows: 50vh 50vh;
+    grid-auto-flow: row;
+    .dashboard-subgroup {
+      display: grid;
+    }
+  }
+}
