@@ -1,11 +1,6 @@
 #commit, merge, push changes from dev
-cd ../
-clear
-git add .
-git commit $1
-echo "commited with ==> " $1
-git checkout master
-git merge dev
+git checkout master && git merge dev
+git add . && git commit -m $1 && echo "commited with ==> " $1
 echo "merged changes"
 git push
 echo "pushed changes"
