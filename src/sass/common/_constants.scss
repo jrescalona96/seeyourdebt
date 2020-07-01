@@ -1,0 +1,3 @@
+@mixin easeOut($speed) {
+  transition: all $speed ease-out;
+}

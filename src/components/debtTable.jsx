@@ -62,14 +62,14 @@ class DebtTable extends Component {
         <h6>
           {balance} of {total}
         </h6>
-        <div id="debtTable">
+        <span className="overflow-auto">
           <Table
             columns={this.columns}
             onSort={(col) => onSort(col)}
             sortColumn={sortColumn}
             data={debts}
           />
-        </div>
+        </span>
       </React.Fragment>
     );
   }

@@ -97,6 +97,17 @@ class Debts extends Component {
     }));
   };
 
+  getPreviousBalance = () => {
+    const { debtHistory } = this.state;
+
+    const balance = this.getBalance();
+    const lastIndex = debtHistory.length - 1;
+    let lastPayment = 0;
+    if (lastIndex >= 0) lastPayment = debtHistory[lastIndex].balance;
+
+    return balance + lastPayment;
+  };
+
   getBalance = () => {
     const { debts } = this.state;
     return debts.reduce((total, item) => total + item.balance, 0);
@@ -156,6 +167,8 @@ class Debts extends Component {
     //convert data for debtConversionTable
     const convertedTotalList = this.getConvertedTotalList(balance, locales);
 
+    const previousBalance = this.getPreviousBalance();
+
     return {
       debts,
       balance,
@@ -163,6 +176,7 @@ class Debts extends Component {
       currencyFormatter,
       locales,
       convertedTotalList,
+      previousBalance,
     };
   };
 
@@ -174,13 +188,34 @@ class Debts extends Component {
       currencyFormatter,
       convertedTotalList,
       locales,
+      previousBalance,
     } = this.getPageData();
     const { currentLocale } = this.state;
 
+    const cardStyle = "card p-2 m-2";
     return (
       <React.Fragment>
-        <div className="row sticky-top">
-          <div className="col-12 col-lg-6">
+        <div id="dashboard">
+          <div className="dashboard-subgroup">
+            <div id="addForm" className={cardStyle}>
+              <AddForm onAdd={(data) => this.handleAdd(data)} />
+            </div>
+            <div id="localeForm" className={cardStyle}>
+              <LocaleForm
+                locales={locales}
+                currentLocale={currentLocale}
+                onLocaleChange={this.handleLocaleChange}
+              />
+            </div>
+            <div id="debtConversionTable" className={cardStyle}>
+              <DebtConversionTable
+                data={convertedTotalList}
+                locales={locales}
+              />
+            </div>
+          </div>
+          <div></div>
+          <div id="debtTable" className={`${cardStyle}`}>
             <DebtTable
               data={{ debts, total, balance }}
               currencyFormatter={currencyFormatter}
@@ -189,26 +224,12 @@ class Debts extends Component {
               onDelete={(col) => this.handleDelete(col)}
               sortColumn={this.state.sortColumn}
             />
-            <div className="row">
-              <div className="col-12 col-md-6">
-                <AddForm onAdd={(data) => this.handleAdd(data)} />
-              </div>
-              <div className="col-12 col-md-6">
-                <LocaleForm
-                  locales={locales}
-                  currentLocale={currentLocale}
-                  onLocaleChange={this.handleLocaleChange}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-lg-6">
-            <DebtConversionTable data={convertedTotalList} locales={locales} />
           </div>
         </div>
-        <div className="mx-auto">
+        <div id="totalDebt" className="text-center">
           <TotalDebt
             total={total}
+            previousBalance={previousBalance}
             balance={balance}
             currencyFormatter={currencyFormatter}
           />

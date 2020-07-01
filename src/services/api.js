@@ -1,6 +1,7 @@
 import * as date from "./dateService";
 import * as crud from "./crudService";
 import { getDefaultLocale } from "./localeService";
+import _ from "lodash";
 
 export const getUserData = () => {
   let data = crud.getData();
@@ -33,29 +34,32 @@ export const getDebt = (_id) => {
 
 export const payDebt = ({ _id, amount }) => {
   const data = { ...crud.getData() };
-
   let debts = [];
   let debtHistory = [...data.debtHistory];
-
   data.debts.forEach((item) => {
     if (item._id === _id) item.balance -= parseFloat(amount);
     if (item.balance <= 0) debtHistory.push(item);
     else debts.push(item);
   });
-
   crud.setData("debts", debts);
   crud.setData("debtHistory", debtHistory);
-
   if (debts.length === 0) _resetDebt();
   return { debts, debtHistory };
 };
 
+const _getNewId = (data) => {
+  const maxItem = _.maxBy(data, "_id");
+  let _id;
+  if (!maxItem) _id = 0;
+  else _id = maxItem._id + 1;
+  return _id;
+};
+
 export const addDebt = ({ balance, lender }) => {
   const data = { ...crud.getData() };
+  let _id = _getNewId([...data.debts, ...data.debtHistory]);
   if (data.debts.length === 0) _resetDebtHistory();
-  const _id = data.debts.length;
   const amount = parseFloat(balance);
-
   data.debts.push({
     _id: _id,
     date: date.getDateToday(),
