@@ -44,6 +44,12 @@ class Form extends Component {
     else this.doSubmit();
   };
 
+  handleFocus = ({ currentTarget: input }) => {
+    const errors = { ...this.state.errors };
+    delete errors[input.name];
+    this.setState({ errors });
+  };
+
   renderSubmitButton(label) {
     return (
       <button
@@ -61,6 +67,7 @@ class Form extends Component {
         label={label}
         name={name}
         onChange={this.handleChange}
+        onFocus={this.handleFocus}
         value={this.state.data[name]}
         error={this.state.errors[name]}
       />

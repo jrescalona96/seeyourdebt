@@ -1,3 +1,15 @@
 @mixin easeOut($speed) {
   transition: all $speed ease-out;
 }
+
+@mixin animatedInput($speed) {
+  input {
+    @include easeOut($speed);
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border: none !important;
+    &:hover {
+      @include easeOut($speed);
+      background-color: rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+}

@@ -5,7 +5,11 @@ function Input({ name, label, onChange, onFocus, value, error }) {
   classes += error ? " is-invalid" : "";
   return (
     <div>
-      {label && <label htmlFor={name}>{label}</label>}
+      {label && (
+        <label htmlFor={name} className="mt-2">
+          {label}
+        </label>
+      )}
       <input
         className={classes}
         name={name}
@@ -13,7 +17,7 @@ function Input({ name, label, onChange, onFocus, value, error }) {
         onChange={onChange}
         onFocus={onFocus}
       />
-      {error && <p className="text-danger">{error}</p>}
+      {error && <p className="text-danger errorMessage">{error}</p>}
     </div>
   );
 }

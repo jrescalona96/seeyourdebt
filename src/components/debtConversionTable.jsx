@@ -17,10 +17,9 @@ const DebtConversionTable = ({ data: totals, locales }) => {
   ];
 
   return (
-    <React.Fragment>
-      <h4>Look here!</h4>
+    <div id="debtConversionTable" className="ml-4">
       <Table columns={columns} data={data}></Table>
-    </React.Fragment>
+    </div>
   );
 };
 

@@ -35,7 +35,7 @@ class TableHead extends Component {
               onClick={() => {
                 this.raiseSort(col.path);
               }}
-              className={col.path ? "p-1 clickable" : "p-1"}
+              className={col.path ? "clickable" : ""}
               key={col.path || col.key}
             >
               {col.label}

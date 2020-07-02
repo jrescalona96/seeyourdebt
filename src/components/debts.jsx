@@ -192,48 +192,29 @@ class Debts extends Component {
     } = this.getPageData();
     const { currentLocale } = this.state;
 
-    const cardStyle = "card p-2 m-2";
     return (
       <React.Fragment>
-        <div id="dashboard">
-          <div className="dashboard-subgroup">
-            <div id="addForm" className={cardStyle}>
-              <AddForm onAdd={(data) => this.handleAdd(data)} />
-            </div>
-            <div id="localeForm" className={cardStyle}>
-              <LocaleForm
-                locales={locales}
-                currentLocale={currentLocale}
-                onLocaleChange={this.handleLocaleChange}
-              />
-            </div>
-            <div id="debtConversionTable" className={cardStyle}>
-              <DebtConversionTable
-                data={convertedTotalList}
-                locales={locales}
-              />
-            </div>
-          </div>
-          <div></div>
-          <div id="debtTable" className={`${cardStyle}`}>
-            <DebtTable
-              data={{ debts, total, balance }}
-              currencyFormatter={currencyFormatter}
-              onPay={(data) => this.handlePay(data)}
-              onSort={(col) => this.handleSort(col)}
-              onDelete={(col) => this.handleDelete(col)}
-              sortColumn={this.state.sortColumn}
-            />
-          </div>
-        </div>
-        <div id="totalDebt" className="text-center">
-          <TotalDebt
-            total={total}
-            previousBalance={previousBalance}
-            balance={balance}
-            currencyFormatter={currencyFormatter}
-          />
-        </div>
+        <AddForm onAdd={(data) => this.handleAdd(data)} />{" "}
+        <LocaleForm
+          locales={locales}
+          currentLocale={currentLocale}
+          onLocaleChange={this.handleLocaleChange}
+        />
+        <DebtTable
+          data={{ debts, total, balance }}
+          currencyFormatter={currencyFormatter}
+          onPay={(data) => this.handlePay(data)}
+          onSort={(col) => this.handleSort(col)}
+          onDelete={(col) => this.handleDelete(col)}
+          sortColumn={this.state.sortColumn}
+        />
+        <TotalDebt
+          total={total}
+          previousBalance={previousBalance}
+          balance={balance}
+          currencyFormatter={currencyFormatter}
+        />
+        <DebtConversionTable data={convertedTotalList} locales={locales} />
       </React.Fragment>
     );
   }
