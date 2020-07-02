@@ -2,7 +2,7 @@ import React from "react";
 import Table from "./common/table";
 import { getCurrencyFormatter } from "../utils/formatter";
 
-const DebtConversionTable = ({ data: totals, locales }) => {
+const DebtConversionTable = ({ data: totals, locales, balance }) => {
   const filtered = totals.filter((item) => item._id !== "");
   const data = filtered.map((item) => {
     const locale = locales.find((loc) => loc._id === item._id);
@@ -17,9 +17,11 @@ const DebtConversionTable = ({ data: totals, locales }) => {
   ];
 
   return (
-    <div id="debtConversionTable" className="ml-4">
-      <Table columns={columns} data={data}></Table>
-    </div>
+    balance > 0 && (
+      <div id="debtConversionTable" className="ml-4">
+        <Table columns={columns} data={data}></Table>
+      </div>
+    )
   );
 };
 

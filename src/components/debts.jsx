@@ -7,7 +7,6 @@ import LocaleForm from "./localeForm";
 import * as locale from "../services/localeService";
 import * as api from "../services/api";
 import * as currency from "../services/currencyService";
-import * as crud from "../services/crudService";
 import { getCurrencyFormatter } from "../utils/formatter";
 import DebtConversionTable from "./debtConversionTable";
 
@@ -75,9 +74,9 @@ class Debts extends Component {
         return item;
       });
 
+      const data = { locale: newLocale, debts: newDebts };
+      api.updateLocale(data);
       this.setState({ currentLocale: newLocale, debts: newDebts });
-      crud.setData("currentLocale", newLocale);
-      crud.setData("debts", this.statedebts);
     }
   };
 
@@ -143,7 +142,7 @@ class Debts extends Component {
       ...[
         {
           _id: "",
-          name: "Choose One",
+          name: "Choose Locale",
         },
       ],
       ...allLocales,
@@ -156,17 +155,11 @@ class Debts extends Component {
       [sortColumn.order]
     );
 
-    // get formatter
     const currencyFormatter = getCurrencyFormatter(currentLocale);
-    // format data
     const debts = this.mapToModelView(orderedDebts, currencyFormatter);
-    // get total balance
     const balance = this.getBalance();
-    // get original total debt
-    const total = this.getTotal();
-    //convert data for debtConversionTable
     const convertedTotalList = this.getConvertedTotalList(balance, locales);
-
+    const total = this.getTotal();
     const previousBalance = this.getPreviousBalance();
 
     return {
@@ -214,7 +207,11 @@ class Debts extends Component {
           balance={balance}
           currencyFormatter={currencyFormatter}
         />
-        <DebtConversionTable data={convertedTotalList} locales={locales} />
+        <DebtConversionTable
+          data={convertedTotalList}
+          locales={locales}
+          balance={balance}
+        />
       </React.Fragment>
     );
   }

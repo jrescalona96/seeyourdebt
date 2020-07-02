@@ -3,7 +3,7 @@
 
 #root {
   font-size: 14px;
-  background-image: url("../assets/concrete-wall.png"), linear-gradient(#ffffff0f, #fd7f2cac);
+  background-image: url("../assets/concrete-wall.png"), linear-gradient(#ffffff0f, #0000000f);
 }
 
 html {
@@ -69,14 +69,22 @@ html {
     overflow: hidden;
   }
 
+  #debtTable,
+  #addForm,
+  #localeForm,
+  #debtConversiontable {
+    z-index: 10;
+  }
+
   #totalDebt {
-    display: block;
-    position: absolute;
-    overflow: hidden;
-    z-index: -1;
-    bottom: 0;
-    left: 15px;
+    font-size: 10rem;
     font-family: "Wallpoet", cursive;
+    font-weight: bold;
+    display: block;
+    position: fixed;
+    width: 1920;
+    overflow: hidden;
+    bottom: 1rem;
   }
 
   #debtTable {
@@ -87,7 +95,7 @@ html {
     top: 4rem;
     right: 1rem;
     width: fit-content;
-    max-height: 80vh;
+    max-height: 50vh;
     overflow: auto;
     &::-webkit-scrollbar {
       width: 0.15rem;
@@ -108,7 +116,7 @@ html {
   #debtConversionTable {
     position: absolute;
     bottom: 0;
-    left: 0;
+    right: 0;
     width: fit-content;
   }
 }

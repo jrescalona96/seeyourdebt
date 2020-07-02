@@ -29,7 +29,7 @@ class LocaleForm extends Form {
         <h4>Change Locale</h4>
         {this.renderMenu({
           name: "locale",
-          label: "Locale",
+          label: "",
           items: locales,
         })}
         {this.renderSubmitButton("Apply")}

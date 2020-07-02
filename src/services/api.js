@@ -83,6 +83,11 @@ export const setSortColumn = (setSortColumn) =>
 const _resetDebtHistory = () => crud.setData("debtHistory", []);
 const _resetDebt = () => crud.setData("debts", []);
 
+export const updateLocale = ({ locale, debts }) => {
+  crud.setData("currentLocale", locale);
+  crud.setData("debts", debts);
+};
+
 export default {
   getDebts,
   getDebt,

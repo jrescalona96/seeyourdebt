@@ -7,7 +7,7 @@ export function getCurrencyFormatter(currentLocale) {
   return new Intl.NumberFormat(loc.language, {
     style: "currency",
     currency: loc.currency,
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
   });
 }
 

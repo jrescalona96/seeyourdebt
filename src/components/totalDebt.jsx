@@ -2,39 +2,39 @@ import React from "react";
 import { Spring } from "react-spring/renderprops";
 
 function TotalDebt({ total, previousBalance, balance, currencyFormatter }) {
-  const percentage = (balance / total) * 100;
-  const textHeight = "10rem";
-
-  function getColor() {
-    if (percentage <= 10) return "#0390fcaf";
-    else if (percentage <= 20) return "#03d7fcaf";
-    else if (percentage <= 30) return "#0331fcaf";
-    else if (percentage <= 40) return "#03d7fcaf";
-    else if (percentage <= 50) return "#73fc03af";
-    else if (percentage <= 60) return "#fcf403af";
-    else if (percentage <= 70) return "#fcbe03af";
-    else if (percentage <= 80) return "#fc6b03af";
-    else if (percentage > 80) return "#fc0303af";
-    else return "gray";
-  }
-
-  const style = {
-    fontSize: textHeight,
-    color: getColor(),
-    fontWeight: "bold",
+  const getAlpha = (amount) => {
+    const alpha = amount / total;
+    if (!alpha || alpha < 0.05) return 0.05;
+    return alpha;
   };
 
   return (
     <React.Fragment>
       <Spring
         config={{ tension: 25, friction: 10 }}
-        from={{ number: previousBalance, number2: balance }}
-        to={{ number: balance, number2: total - balance }}
+        from={{
+          balance: previousBalance,
+          paid: balance,
+          balanceAlpha: getAlpha(previousBalance),
+          paidAlpha: getAlpha(balance),
+        }}
+        to={{
+          balance: balance,
+          paid: total - balance,
+          balanceAlpha: getAlpha(balance),
+          paidAlpha: getAlpha(total - balance),
+        }}
       >
         {(props) => (
-          <div id="totalDebt" style={style}>
-            <div>Paid:{currencyFormatter.format(props.number2.toFixed())}</div>
-            <div>Bal:{currencyFormatter.format(props.number.toFixed())}</div>
+          <div id="totalDebt">
+            {props.paid > 0 && (
+              <div style={{ color: `rgba(0,0,128,${props.paidAlpha})` }}>
+                {currencyFormatter.format(props.paid)}
+              </div>
+            )}
+            <div style={{ color: `rgba(139,0,0,${props.balanceAlpha})` }}>
+              {currencyFormatter.format(props.balance)}
+            </div>
           </div>
         )}
       </Spring>

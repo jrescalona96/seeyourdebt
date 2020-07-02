@@ -23,8 +23,8 @@ class DebtTable extends Component {
 
   renderDeleteButton = (item) => {
     const decoration = {
-      classes: "btn btn-danger btn-sm",
-      label: "Delete",
+      classes: "btn btn-outline-danger btn-sm",
+      label: "X",
     };
     return (
       <ActionButton
@@ -42,7 +42,7 @@ class DebtTable extends Component {
 
     let message = "";
     if (totalCount > 1) message = `${totalCount} Debts Remaining `;
-    else if (totalCount === 1) message = `${totalCount} Debt Left`;
+    else if (totalCount === 1) message = `${totalCount} Debt left`;
     else message = "All Paid Up!";
 
     return { balance, total, totalCount, message };
@@ -57,18 +57,20 @@ class DebtTable extends Component {
 
     const { balance, total, message } = this.mapToModelView();
     return (
-      <div id="debtTable">
-        <h4>{message}</h4>
-        <h6>
-          {balance} of {total}
-        </h6>
-        <Table
-          columns={this.columns}
-          onSort={(col) => onSort(col)}
-          sortColumn={sortColumn}
-          data={debts}
-        />
-      </div>
+      debts.length > 0 && (
+        <div id="debtTable">
+          <h4>{message}</h4>
+          <h6>
+            {balance} of {total}
+          </h6>
+          <Table
+            columns={this.columns}
+            onSort={(col) => onSort(col)}
+            sortColumn={sortColumn}
+            data={debts}
+          />
+        </div>
+      )
     );
   }
 }
