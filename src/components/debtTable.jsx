@@ -57,20 +57,18 @@ class DebtTable extends Component {
 
     const { balance, total, message } = this.mapToModelView();
     return (
-      <React.Fragment>
+      <div id="debtTable">
         <h4>{message}</h4>
         <h6>
           {balance} of {total}
         </h6>
-        <span className="overflow-auto">
-          <Table
-            columns={this.columns}
-            onSort={(col) => onSort(col)}
-            sortColumn={sortColumn}
-            data={debts}
-          />
-        </span>
-      </React.Fragment>
+        <Table
+          columns={this.columns}
+          onSort={(col) => onSort(col)}
+          sortColumn={sortColumn}
+          data={debts}
+        />
+      </div>
     );
   }
 }

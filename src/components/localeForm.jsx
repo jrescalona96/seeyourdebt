@@ -21,7 +21,11 @@ class LocaleForm extends Form {
     const { locales } = this.props;
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form
+        id="localeForm"
+        className="p-2 card  col-12 col-sm-6"
+        onSubmit={this.handleSubmit}
+      >
         <h4>Change Locale</h4>
         {this.renderMenu({
           name: "locale",
