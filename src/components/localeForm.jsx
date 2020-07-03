@@ -23,7 +23,7 @@ class LocaleForm extends Form {
     return (
       <form
         id="localeForm"
-        className="p-2 card  col-12 col-sm-6"
+        className="pb-2 col-12 col-sm-6"
         onSubmit={this.handleSubmit}
       >
         <h4>Change Locale</h4>

@@ -64,6 +64,7 @@ class Form extends Component {
   renderInput(name, label) {
     return (
       <Input
+        theme={this.props.theme}
         label={label}
         name={name}
         onChange={this.handleChange}

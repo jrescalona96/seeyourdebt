@@ -19,7 +19,7 @@ class AddForm extends Form {
 
   render() {
     return (
-      <div id="addForm" className="mb-2 p-2 card col-12 col-sm-6">
+      <div id="addForm" className="col-12 col-sm-6">
         <h4>Add New Debt</h4>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">

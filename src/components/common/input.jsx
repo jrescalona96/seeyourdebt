@@ -1,8 +1,9 @@
 import React from "react";
 
-function Input({ name, label, onChange, onFocus, value, error }) {
-  let classes = "form-control input-sm";
+function Input({ name, label, onChange, onFocus, value, error, theme }) {
+  let classes = `form-control input-sm ${theme}`;
   classes += error ? " is-invalid" : "";
+
   return (
     <div>
       {label && (

@@ -184,14 +184,16 @@ class Debts extends Component {
       previousBalance,
     } = this.getPageData();
     const { currentLocale } = this.state;
+    const { theme } = this.props;
 
     return (
       <React.Fragment>
-        <AddForm onAdd={(data) => this.handleAdd(data)} />{" "}
+        <AddForm onAdd={(data) => this.handleAdd(data)} theme={theme} />
         <LocaleForm
           locales={locales}
           currentLocale={currentLocale}
           onLocaleChange={this.handleLocaleChange}
+          theme={theme}
         />
         <DebtTable
           data={{ debts, total, balance }}
@@ -200,17 +202,20 @@ class Debts extends Component {
           onSort={(col) => this.handleSort(col)}
           onDelete={(col) => this.handleDelete(col)}
           sortColumn={this.state.sortColumn}
+          theme={theme}
         />
         <TotalDebt
           total={total}
           previousBalance={previousBalance}
           balance={balance}
           currencyFormatter={currencyFormatter}
+          theme={theme}
         />
         <DebtConversionTable
           data={convertedTotalList}
           locales={locales}
           balance={balance}
+          theme={theme}
         />
       </React.Fragment>
     );

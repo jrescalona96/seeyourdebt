@@ -17,9 +17,10 @@ class DebtTable extends Component {
     },
   ];
 
-  renderPayForm = (item) => (
-    <PayForm item={item} onPay={(data) => this.props.onPay(data)} />
-  );
+  renderPayForm = (item) => {
+    const { theme, onPay } = this.props;
+    return <PayForm item={item} onPay={(data) => onPay(data)} theme={theme} />;
+  };
 
   renderDeleteButton = (item) => {
     const decoration = {
@@ -53,12 +54,13 @@ class DebtTable extends Component {
       data: { debts },
       onSort,
       sortColumn,
+      theme,
     } = this.props;
 
     const { balance, total, message } = this.mapToModelView();
     return (
       debts.length > 0 && (
-        <div id="debtTable">
+        <div id="debtTable" className="col-12">
           <h4>{message}</h4>
           <h6>
             {balance} of {total}
@@ -68,6 +70,7 @@ class DebtTable extends Component {
             onSort={(col) => onSort(col)}
             sortColumn={sortColumn}
             data={debts}
+            theme={theme}
           />
         </div>
       )

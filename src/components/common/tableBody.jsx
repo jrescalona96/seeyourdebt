@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
 
-function TableBody({ columns, data }) {
+function TableBody({ columns, data, theme }) {
   const createKey = (item, col) => {
     return item._id + (col.path || col.key) + Date.now();
   };
@@ -15,7 +15,7 @@ function TableBody({ columns, data }) {
     <tbody>
       {data.map((item) => {
         return (
-          <tr key={item._id}>
+          <tr key={item._id} className={theme}>
             {columns.map((col) => (
               <td key={createKey(item, col)}>{renderCell(item, col)}</td>
             ))}

@@ -36,11 +36,7 @@ class PayForm extends Form {
 
   render() {
     return (
-      <form
-        id="payForm"
-        className="d-flex align-items-center"
-        onSubmit={this.handleSubmit}
-      >
+      <form className="d-flex align-items-center" onSubmit={this.handleSubmit}>
         {this.renderInput("amount")}
         <div className="ml-2 ">{this.renderSubmitButton("Pay")}</div>
       </form>

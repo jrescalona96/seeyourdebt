@@ -16,17 +16,23 @@ class TableHead extends Component {
   };
 
   renderSortIcon = (col) => {
-    const { sortColumn } = this.props;
+    const { sortColumn, theme } = this.props;
 
     if (sortColumn) {
       if (col.path !== sortColumn.path || col.key) return null;
       else if (sortColumn.order === "asc")
-        return <i className="ml-1 fa fa-arrow-up" aria-hidden="true"></i>;
-      return <i className="ml-1 fa fa-arrow-down" aria-hidden="true"></i>;
+        return (
+          <i className={`ml-1 fa fa-arrow-up ${theme}`} aria-hidden="true"></i>
+        );
+      return (
+        <i className={`ml-1 fa fa-arrow-down ${theme}`} aria-hidden="true"></i>
+      );
     }
   };
 
   render() {
+    const { theme } = this.props;
+
     return (
       <thead>
         <tr>
@@ -35,7 +41,7 @@ class TableHead extends Component {
               onClick={() => {
                 this.raiseSort(col.path);
               }}
-              className={col.path ? "clickable" : ""}
+              className={col.path ? `${theme} clickable` : theme}
               key={col.path || col.key}
             >
               {col.label}
