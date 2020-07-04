@@ -195,6 +195,7 @@ class Debts extends Component {
           onLocaleChange={this.handleLocaleChange}
           theme={theme}
         />
+
         <DebtTable
           data={{ debts, total, balance }}
           currencyFormatter={currencyFormatter}

@@ -19,7 +19,8 @@
   line-height: 1;
   @include easeOut(0.5s);
   &.lightTheme {
-    background-image: url("../assets/concrete-wall.png"), linear-gradient(#ffffff0f, #0000000f);
+    background-image: url("../assets/concrete-wall.png"),
+      linear-gradient(#ffffff0f, #0000000f);
   }
   &.darkTheme {
     background-color: rgba(5, 16, 63, 0.9);
@@ -54,6 +55,11 @@
   padding: 0;
   margin: 0;
   display: none;
+}
+
+#logo {
+  z-index: 10;
+  height: 100px;
 }
 
 #debtTable,
