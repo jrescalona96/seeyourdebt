@@ -1,6 +1,6 @@
 {
-  "short_name": "SYD",
-  "name": "SeeYourDebt",
+  "short_name": "db",
+  "name": "DebtCounter",
   "icons": [
     {
       "src": "favicon.ico",
