@@ -17,6 +17,6 @@ This web app helps users keep track of their overall Debt by displaying the amou
 The this app is built using React.js utilizing the browsers localStorage for data persistence.
 
 Check it out here:
-https://debtcounter.herokuapp.com/
+https://jrescalona96.github.io/debtcounter/
 
 > The app may take a while to load up as heroku will put the app to sleep after some time. Try refreshing the page when you've been redirected.
